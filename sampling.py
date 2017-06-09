@@ -2,6 +2,9 @@ import numpy as np
 
 def rejection_sampling(pdf, low, high, n_samples, *args):
     """
+    This is a not-very-efficient implementation of the acceptance-rejection
+    sampler. (I don't know why I even put it on github).
+
     Parameters
     ----------
     pdf : callable
@@ -12,6 +15,11 @@ def rejection_sampling(pdf, low, high, n_samples, *args):
         Number of desired samples
     args : list
         List of additional arguments to be passed to ``pdf``.
+
+    Returns
+    -------
+    accepted_samples : array
+        Array containing samples from ``pdf``
     """
 
     x = np.linspace(low, high, n_samples)
