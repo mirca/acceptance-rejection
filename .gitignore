@@ -1,0 +1,13 @@
+.DS_Store
+.ipynb_checkpoints
+__pycache__
+.*.swo
+.*.swp
+.eggs/
+maoud.egg-info/
+*.log
+*.aux
+*.out
+*.blg
+*.bbl
+docs/sphinx_rtd_theme/
