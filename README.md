@@ -1,5 +1,5 @@
 # acceptance-rejection
-Acceptance Rejection sampler in Python 
+Acceptance Rejection sampler in Python [![DOI](https://zenodo.org/badge/93903777.svg)](https://zenodo.org/badge/latestdoi/93903777)
 
 Let's say you have a complicated density function for which there is no implementation in ``Scipy`` e.g., Yacoub's Kappa-Mu:
 
@@ -9,12 +9,12 @@ import scipy.special as sps
 
 def kappa_mu_pdf(x, kappa, mu):
     return (2.0 * mu * np.power(1.0 + kappa, (mu + 1.0) / 2.0) * np.power(x, mu)
-            * np.exp(-mu * (1 + kappa) * x * x - mu * kappa + 2 * x * mu
-            * np.sqrt(kappa * ( 1 + kappa))) * sps.ive(mu - 1, 2 * mu * x
+            * np.exp(-mu * (1.0 + kappa) * x * x - mu * kappa + 2 * x * mu
+            * np.sqrt(kappa * (1.0 + kappa))) * sps.ive(mu - 1, 2 * mu * x
             * np.sqrt(kappa * (1.0 + kappa))) / (np.power(kappa, (mu - 1.0) / 2.0)))
 ```
 
-Then you might want to do
+Then you might want to do the following in order to draw samples
 
 ```
 from sampling import rejection_sampling
