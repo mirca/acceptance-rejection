@@ -9,7 +9,7 @@ import scipy.special as sps
 
 def kappa_mu_pdf(x, kappa, mu):
     return (2.0 * mu * np.power(1.0 + kappa, (mu + 1.0) / 2.0) * np.power(x, mu)
-            * np.exp(-mu * (1 + kappa) * x *x - mu * kappa + 2 * x * mu
+            * np.exp(-mu * (1 + kappa) * x * x - mu * kappa + 2 * x * mu
             * np.sqrt(kappa * ( 1 + kappa))) * sps.ive(mu - 1, 2 * mu * x
             * np.sqrt(kappa * (1.0 + kappa))) / (np.power(kappa, (mu - 1.0) / 2.0)))
 ```
