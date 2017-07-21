@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.special as sps
 import scipy.stats as stats
-from rejection_sampling import rejection_sampling
+from sampling import rejection_sampling
 
 
 class alphamu(object):
