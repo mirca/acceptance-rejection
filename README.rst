@@ -1,5 +1,7 @@
-# acceptance-rejection
-Acceptance Rejection sampler in Python [![DOI](https://zenodo.org/badge/93903777.svg)](https://zenodo.org/badge/latestdoi/93903777)
+# yacoub
+
+yacoub: simulation of generalized fading channels in Python.
+[![DOI](https://zenodo.org/badge/93903777.svg)](https://zenodo.org/badge/latestdoi/93903777)
 
 Let's say you have a complicated density function for which there is no implementation in ``Scipy`` e.g., Yacoub's Kappa-Mu:
 

@@ -6,26 +6,86 @@ from sampling import rejection_sampling
 
 
 class Distribution(ABC):
+    """An abstract class for a probability distribution.
+    """
     @abstractmethod
     def pdf(self, x):
+        """Defines a 1D probability density function.
+
+        Parameters
+        ----------
+        x : 1darray
+            Points where to evaluate the pdf.
+
+        Returns
+        -------
+        pdf : 1darray
+            pdf values at `x`.
+        """
         pass
 
-    def rvs(self, low, high, nsamples):
-        return rejection_samples(self.pdf, low, high, nsamples)
+    def rvs(self, low, high, size):
+        """Returns a sample of length `size` in the range
+        [low, high].
+
+        Parameters
+        ----------
+        low, high : float, float
+            Lower and upper bounds to constrain the pdf.
+        size : int
+            Size of the sample (number of realizations).
+        """
+        return rejection_samples(self.pdf, low, high, size)
 
 
 class ComplexDistributions(Distribution):
-    def rvs(self, low, high, nsamples):
-        return (rejection_samples(self.pdf, low, high, nsamples)
-                + 1j * rejection_samples(self.pdf, low, high, nsamples))
+    """Defines a class for probability distribution
+    arising from a complex random variable Z = X + jY,
+    where j = sqrt(-1).
+    """
+    def rvs(self, low, high, size):
+        """Returns a sample of length `size` in the range
+        [low, high].
+
+        Parameters
+        ----------
+        low, high : float, float
+            Lower and upper bounds to constrain the pdf.
+        size : int
+            Size of the sample (number of realizations).
+        """
+        return (rejection_samples(self.pdf, low, high, size)
+                + 1j * rejection_samples(self.pdf, low, high, size))
 
 
 class AlphaMu(Distribution):
+    """Defines the α — μ probability distribution.
+    For the theorectical aspects of the α — μ distribution, see
+    M. D. Yacoub, The α — μ distribution: A physical fading model for the Stacy
+    distribution, IEEE Trans. Veh. Technol., vol. 56, no. 1, pp. 27–34, 2007.
+
+    Attributes
+    ----------
+    alpha, mu : float, float
+        Parameters that define the α — μ distribution.
+    """
     def __init__(self, alpha, mu):
         self.alpha = alpha
         self.mu = mu
 
     def pdf(self, x):
+        """Defines a univariate α — μ  probability density function.
+
+        Parameters
+        ----------
+        x : 1darray
+            Points where to evaluate the pdf.
+
+        Returns
+        -------
+        pdf : 1darray
+            pdf values at `x`.
+        """
         return (self.alpha * self.mu ** self.mu * x ** (self.alpha * self.mu - 1.0)
                 * np.exp(-self.mu * x ** self.alpha) / sps.gamma(self.mu))
 
