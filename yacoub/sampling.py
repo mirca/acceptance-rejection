@@ -2,8 +2,8 @@ import numpy as np
 
 def rejection_sampling(pdf, low, high, n_samples, *args):
     """
-    This is a not-very-efficient implementation of the acceptance-rejection
-    sampler. (I don't know why I even put it on github).
+    This is actually a pretty good implementation of the acceptance-rejection
+    sampler.
 
     Parameters
     ----------
@@ -28,13 +28,11 @@ def rejection_sampling(pdf, low, high, n_samples, *args):
     if np.isnan(pdfmax) or np.isinf(pdfmax):
         raise ValueError("pdf has nan or inf values.")
 
-    n_accepted_samples = 0
     accepted_samples = []
-    while n_accepted_samples < n_samples:
+    while accepted_samples.size < n_samples:
         unif_x = np.random.uniform(low=low, high=high, size=n_samples)
         unif_y = np.random.uniform(size=n_samples)
         accept = np.where(unif_y <= pdf(unif_x, *args) / pdfmax)[0]
         accepted_samples = np.concatenate([accepted_samples, unif_x[accept]])
-        n_accepted_samples = accepted_samples.size
 
     return accepted_samples[:n_samples]
