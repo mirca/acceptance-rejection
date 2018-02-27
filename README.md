@@ -46,8 +46,8 @@ SHAZAM!!
 
 **Citation**
 
-If you made use of the code on this repository, please cite the following
-work:
+If you made use of the code available in this repository, please consider
+citing the following work:
 
 **On the performance of the energy detector subject to impulsive noise in κ—μ, α—μ, and η—μ fading channels**
 JVM Cardoso, WJL Queiroz, H Liu, MS Alencar - *Tsinghua Science and Technology*, 2017.
