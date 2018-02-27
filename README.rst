@@ -1,7 +1,5 @@
-# yacoub
-
-yacoub: simulation of generalized fading channels in Python.
-[![DOI](https://zenodo.org/badge/93903777.svg)](https://zenodo.org/badge/latestdoi/93903777)
+yacoub: simulation of generalized fading channels in Python
+===========================================================
 
 Let's say you have a complicated density function for which there is no implementation in ``Scipy`` e.g., Yacoub's Kappa-Mu:
 
@@ -46,3 +44,27 @@ plt.hist(kappa_mu_samples, bins=50, normed=True)
 ![sick plot](https://github.com/mirca/acceptance-rejection/raw/master/kappa_mu.png)
 
 SHAZAM!!
+
+Citation
+========
+
+If you made use of the code on this repository, please cite the following
+work:
+
+**On the performance of the energy detector subject to impulsive noise in κ—μ, α—μ, and η—μ fading channels**
+JVM Cardoso, WJL Queiroz, H Liu, MS Alencar - *Tsinghua Science and Technology*, 2017.
+
+```
+@ARTICLE{7986939,
+author={J. V. M. Cardoso and W. J. L. Queiroz and H. Liu and M. S. Alencar},
+journal={Tsinghua Science and Technology},
+title={On the performance of the energy detector subject to impulsive noise in #x03BA; #x2014; #x03BC;, #x03B1; #x2014; #x03BC;, and #x03B7; #x2014; #x03BC; fading channels},
+year={2017},
+volume={22},
+number={4},
+pages={360-367},
+keywords={Detectors;Monte Carlo methods;Probability density function;Rayleigh channels;Signal to noise ratio;energy detector;fading channel;impulsive noise;spectrum sensing},
+doi={10.23919/TST.2017.7986939},
+ISSN={},
+month={Aug},}
+```
