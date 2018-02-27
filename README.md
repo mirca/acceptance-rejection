@@ -1,5 +1,4 @@
-yacoub: simulation of generalized fading channels in Python
-===========================================================
+**yacoub: simulation of generalized fading channels in Python**
 
 Let's say you have a complicated density function for which there is no implementation in ``Scipy`` e.g., Yacoub's Kappa-Mu:
 
@@ -45,8 +44,7 @@ plt.hist(kappa_mu_samples, bins=50, normed=True)
 
 SHAZAM!!
 
-Citation
-========
+**Citation**
 
 If you made use of the code on this repository, please cite the following
 work:
