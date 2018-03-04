@@ -25,18 +25,18 @@ class Distribution(ABC):
         """
         pass
 
-    def rvs(self, low, high, size):
+    def rvs(self, x, size):
         """Returns a sample of length `size` in the range
-        [low, high].
+        [x.min(), x.max()].
 
         Parameters
         ----------
-        low, high : float, float
-            Lower and upper bounds to constrain the pdf.
+        x : array
+            The support of the pdf.
         size : int
             Size of the sample (number of realizations).
         """
-        return rejection_samples(self.pdf, low, high, size)
+        return rejection_samples(self.pdf, x, size)
 
 
 class ComplexDistribution(Distribution):
@@ -44,19 +44,24 @@ class ComplexDistribution(Distribution):
     arising from a complex random variable Z = X + jY,
     where j = sqrt(-1).
     """
-    def rvs(self, low, high, size):
+    def rvs(self, x, y, size):
         """Returns a sample of length `size` in the range
-        [low, high].
+        [x.min(), x.max()] and [y.min(), y.max()] for the
+        real and imaginary parts.
 
         Parameters
         ----------
-        low, high : float, float
-            Lower and upper bounds to constrain the pdf.
+        x, y : arrays
+            The support of the pdf of the real and imaginary parts,
+            respectively.
         size : int
             Size of the sample (number of realizations).
         """
-        return (rejection_samples(self.pdf, low, high, size)
-                + 1j * rejection_samples(self.pdf, low, high, size))
+        if len(x) != len(y):
+            raise ValueError("x and y must have the same length.")
+
+        return (rejection_samples(self.pdf, x, size)
+                + 1j * rejection_samples(self.pdf, y, size))
 
 
 class AlphaMu(Distribution):
@@ -92,6 +97,16 @@ class AlphaMu(Distribution):
 
 
 class EtaMu(Distribution):
+    """Defines the \eta — μ probability distribution.
+    For the theorectical aspects of the \eta — μ distribution, see
+    [ADD REFERENCE]
+
+    Attributes
+    ----------
+    eta, mu : float, float
+        Parameters that define the eta — μ distribution.
+    """
+
     def __init__(self, eta, mu):
         self.eta = eta
         self.mu = mu
@@ -105,6 +120,16 @@ class EtaMu(Distribution):
 
 
 class KappaMu(Distribution):
+    """Defines the \kappa — μ probability distribution.
+    For the theorectical aspects of the \kappa — μ distribution, see
+    [ADD REFERENCE]
+
+    Attributes
+    ----------
+    kappa, mu : float, float
+        Parameters that define the kappa — μ distribution.
+    """
+
     def __init__(self, kappa, mu):
         self.kappa = kappa
         self.mu = mu
@@ -127,7 +152,6 @@ class ComplexAlphaMu(ComplexDistribution):
         return (self.mu ** (self.mu * 0.5) * np.abs(x) ** (self.mu - 1.0) * np.exp(-self.mu * x * x)
                 / sps.gamma(self.mu * 0.5))
 
-
 class ComplexEtaMu(ComplexDistribution):
     def __init__(self, eta, mu):
         self.eta = eta
@@ -145,7 +169,7 @@ class ComplexKappaMu(object):
         self.mu = mu
         self.phi = phi
 
-    def real_pdf(self, x):
+    def real_part(self, x):
         p = np.sqrt(self.kappa / (1.0 + self.kappa)) * np.cos(self.phi)
         sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
 
@@ -153,7 +177,7 @@ class ComplexKappaMu(object):
                 * sps.iv(self.mu * 0.5 - 1.0, np.abs(p * x) / sigma2)
                 / (2.0 * sigma2 * np.abs(p) ** (0.5 * self.mu - 1.0) * np.cosh(p * x / sigma2)))
 
-    def imag_pdf(self, x):
+    def imag_part(self, x):
         q = np.sqrt(self.kappa / (1.0 + self.kappa)) * np.sin(self.phi)
         sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
 
@@ -161,6 +185,6 @@ class ComplexKappaMu(object):
                 * sps.iv(self.mu * 0.5 - 1.0, np.abs(q * x) / sigma2)
                 / (2.0 * sigma2 * np.abs(q) ** (0.5 * self.mu - 1.0) * np.cosh(q * x / sigma2)))
 
-    def rvs(self, low, high, nsamples):
-        return (rejection_samples(self.real_pdf, low, high, nsamples)
-                + 1j * rejection_samples(self.imag_pdf, low, high, nsamples))
+    def rvs(self, x, y, size):
+        return (rejection_samples(self.real_part, x, y, size)
+                + 1j * rejection_samples(self.imag_part, x, y, size))
