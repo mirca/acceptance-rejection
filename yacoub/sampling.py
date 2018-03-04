@@ -1,6 +1,7 @@
 import numpy as np
+import math
 
-def rejection_sampling(pdf, low, high, n_samples, *args):
+def rejection_sampling(pdf, x, n_samples, *args):
     """
     This is actually a pretty good implementation of the acceptance-rejection
     sampler.
@@ -9,10 +10,10 @@ def rejection_sampling(pdf, low, high, n_samples, *args):
     ----------
     pdf : callable
         The analytical formulation of the density function to get samples from.
-    low, high : float, float
-        The support of the density or the interval where to get samples.
+    x : array
+        The support of the pdf.
     n_samples : int
-        Number of desired samples
+        The sample size.
     args : list
         List of additional arguments to be passed to ``pdf``.
 
@@ -21,18 +22,20 @@ def rejection_sampling(pdf, low, high, n_samples, *args):
     accepted_samples : array
         Array containing samples from ``pdf``
     """
+    pdf_x = pdf(x, *args)
+    pdf_min, pdf_max  = np.min(pdf_x), np.max(pdf_x)
 
-    x = np.linspace(low, high, n_samples)
-    pdfmax = np.max(pdf(x, *args))
-
-    if np.isnan(pdfmax) or np.isinf(pdfmax):
+    if not np.isfinite(pdf_max):
         raise ValueError("pdf has nan or inf values.")
 
+    n_samples = int(n_samples)
+    x_min, x_max = np.min(x), np.max(x)
     accepted_samples = []
-    while accepted_samples.size < n_samples:
-        unif_x = np.random.uniform(low=low, high=high, size=n_samples)
-        unif_y = np.random.uniform(size=n_samples)
-        accept = np.where(unif_y <= pdf(unif_x, *args) / pdfmax)[0]
+
+    while len(accepted_samples) < n_samples:
+        unif_x = np.random.uniform(low=x_min, high=x_max, size=n_samples)
+        unif_y = np.random.uniform(low=pdf_min, high=1., size=n_samples)
+        accept = np.log(unif_y) <= (np.log(pdf(unif_x, *args)) - math.log(pdf_max))
         accepted_samples = np.concatenate([accepted_samples, unif_x[accept]])
 
     return accepted_samples[:n_samples]

@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import math
 import scipy.special as sps
 import scipy.stats as stats
-from sampling import rejection_sampling
+from .sampling import rejection_sampling
 
 
 class Distribution(ABC):
@@ -38,7 +39,7 @@ class Distribution(ABC):
         return rejection_samples(self.pdf, low, high, size)
 
 
-class ComplexDistributions(Distribution):
+class ComplexDistribution(Distribution):
     """Defines a class for probability distribution
     arising from a complex random variable Z = X + jY,
     where j = sqrt(-1).
@@ -97,9 +98,9 @@ class EtaMu(Distribution):
 
     def pdf(self, x):
         return (4.0 * np.sqrt(np.pi) * self.mu ** (self.mu + 0.5) * x ** (2 * self.mu)
-                * np.exp(-2.0 * self.mu * x * x / (1.0 + self.eta))
-                * sps.ive(self.mu - 0.5, 2.0 * self.eta * self.mu * x * x / (1.0 - self.eta * self.eta))
-                / (self.eta ** (self.mu - 0.5) * np.sqrt(1.0 - self.eta * self.eta)
+                * np.exp(-2. * self.mu * x * x / (1. + self.eta))
+                * sps.ive(self.mu - 0.5, 2. * self.eta * self.mu * x * x / (1. - self.eta * self.eta))
+                / (self.eta ** (self.mu - 0.5) * np.sqrt(1. - self.eta * self.eta)
                 * sps.gamma(self.mu)))
 
 
@@ -109,11 +110,12 @@ class KappaMu(Distribution):
         self.mu = mu
 
     def pdf(self, x):
-	return (2.0 * self.mu * (1.0 + self.kappa) ** ((self.mu + 1.0) / 2.0) * x ** self.mu
-                * np.exp(-self.mu * (1 + self.kappa) * x * x - self.mu * self.kappa + 2 * x * self.mu
-                * np.sqrt(self.kappa * (1 + self.kappa)))
-                * sps.ive(self.mu - 1, 2 * self.mu * x * np.sqrt(self.kappa * (1.0 + self.kappa)))
-                / (self.kappa ** ((self.mu - 1.0) / 2.0)))
+        return (2. * self.mu * (1. + self.kappa) ** ((self.mu + 1.) * .5)
+                * np.power(x, self.mu)
+                * np.exp(-self.mu * (1. + self.kappa) * x * x - self.mu * self.kappa
+                         + 2. * x * self.mu * math.sqrt(self.kappa * (1. + self.kappa)))
+                * sps.ive(self.mu - 1., 2. * self.mu * x * math.sqrt(self.kappa * (1. + self.kappa)))
+                / self.kappa ** ((self.mu - 1.) * .5))
 
 
 class ComplexAlphaMu(ComplexDistribution):
@@ -122,11 +124,11 @@ class ComplexAlphaMu(ComplexDistribution):
         self.mu = mu
 
     def pdf(self, x):
-	return (self.mu ** (self.mu * 0.5) * np.abs(x) ** (self.mu - 1.0) * np.exp(-self.mu * x * x)
+        return (self.mu ** (self.mu * 0.5) * np.abs(x) ** (self.mu - 1.0) * np.exp(-self.mu * x * x)
                 / sps.gamma(self.mu * 0.5))
 
 
-class ComplexEtaMu(ComplexDistributon):
+class ComplexEtaMu(ComplexDistribution):
     def __init__(self, eta, mu):
         self.eta = eta
         self.mu = mu
@@ -145,17 +147,17 @@ class ComplexKappaMu(object):
 
     def real_pdf(self, x):
         p = np.sqrt(self.kappa / (1.0 + self.kappa)) * np.cos(self.phi)
-	sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
+        sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
 
-	return (np.abs(x) ** (0.5 * self.mu) * np.exp(-(x - p) ** 2 / (2.0 * sigma2))
+        return (np.abs(x) ** (0.5 * self.mu) * np.exp(-(x - p) ** 2 / (2.0 * sigma2))
                 * sps.iv(self.mu * 0.5 - 1.0, np.abs(p * x) / sigma2)
                 / (2.0 * sigma2 * np.abs(p) ** (0.5 * self.mu - 1.0) * np.cosh(p * x / sigma2)))
 
     def imag_pdf(self, x):
-	q = np.sqrt(self.kappa / (1.0 + self.kappa)) * np.sin(self.phi)
-	sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
+        q = np.sqrt(self.kappa / (1.0 + self.kappa)) * np.sin(self.phi)
+        sigma2 = 1.0 / (2.0 * self.mu * (1.0 + self.kappa))
 
-	return (np.abs(x) ** (0.5 * self.mu) * np.exp(-(x - q) ** 2 / (2.0 * sigma2))
+        return (np.abs(x) ** (0.5 * self.mu) * np.exp(-(x - q) ** 2 / (2.0 * sigma2))
                 * sps.iv(self.mu * 0.5 - 1.0, np.abs(q * x) / sigma2)
                 / (2.0 * sigma2 * np.abs(q) ** (0.5 * self.mu - 1.0) * np.cosh(q * x / sigma2)))
 
