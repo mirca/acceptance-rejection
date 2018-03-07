@@ -23,7 +23,7 @@ setup(
     name='yacoub',
     packages=['yacoub'],
     version='0.1.dev0',
-    description='A colorful, long-tailed package for beautiful Majorization-minimization',
+    description='Simulating fading channels in tensorflow',
     long_description=long_description,
     url='https://github.com/mirca/yacoub',
     author='mirca',
@@ -37,5 +37,5 @@ setup(
     ],
     tests_require=['pytest', 'pytest-cov'],
     keywords='statistics probability',
-    install_requires=['numpy', 'scipy']
+    install_requires=['numpy', 'scipy', 'tensorflow']
 )
