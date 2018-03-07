@@ -1,2 +1,2 @@
-from distributions import *
-from sampling import *
+from .distributions import *
+from .sampling import *

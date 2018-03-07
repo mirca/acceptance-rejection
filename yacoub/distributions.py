@@ -36,7 +36,7 @@ class Distribution(ABC):
         size : int
             Size of the sample (number of realizations).
         """
-        return rejection_samples(self.pdf, x, size)
+        return rejection_sampling(self.pdf, x, size)
 
 
 class ComplexDistribution(Distribution):
@@ -60,8 +60,8 @@ class ComplexDistribution(Distribution):
         if len(x) != len(y):
             raise ValueError("x and y must have the same length.")
 
-        return (rejection_samples(self.pdf, x, size)
-                + 1j * rejection_samples(self.pdf, y, size))
+        return (rejection_sampling(self.pdf, x, size)
+                + 1j * rejection_sampling(self.pdf, y, size))
 
 
 class AlphaMu(Distribution):
@@ -186,5 +186,5 @@ class ComplexKappaMu(object):
                 / (2.0 * sigma2 * np.abs(q) ** (0.5 * self.mu - 1.0) * np.cosh(q * x / sigma2)))
 
     def rvs(self, x, y, size):
-        return (rejection_samples(self.real_part, x, y, size)
-                + 1j * rejection_samples(self.imag_part, x, y, size))
+        return (rejection_sampling(self.real_part, x, y, size)
+                + 1j * rejection_sampling(self.imag_part, x, y, size))
