@@ -5,6 +5,7 @@
 \usepackage{color}
 \usepackage{placeins}
 \usepackage{bm}
+\usepackage{cite}
 %\usepackage{stfloats}
 \usepackage{float}
 \usepackage{hyperref}
@@ -14,15 +15,12 @@
 \begin{document}
 \title{\texttt{yacoub}: a Python package for Simulating Generalized Fading Channels}
 
-\author{\IEEEauthorblockN{Jos\'e~V.~de~M.~Cardoso,~Paulo~R.~Lins~J\'unior,
-                          Wamberto~J.~L.~Queiroz,}
-        \IEEEauthorblockN{~Francisco~M.~Bernardino~J\'unior,~and~Marcelo~S.~Alencar,~\textit{IEEE Senior Member}}
+\author{\IEEEauthorblockN{Jos\'e~V.~de~M.~Cardoso,~Paulo~R.~Lins~J\'unior,}
+        \IEEEauthorblockN{~Wamberto~J.~L.~Queiroz,~and~Marcelo~S.~Alencar,~\textit{IEEE Senior Member}}
 \IEEEauthorblockA{Universidade Federal de Campina Grande\\
 Instituto Federal de Educa\c c\~ao, Ciencia, e Tecnologia da Para\'iba\\
 Campina Grande, Para\'iba, Brasil\\
-Universidade de Pernambuco\\
-Recife, Brasil\\
-\{josevinicius,paulo,malencar\}@iecom.org.br\\}
+\{josevinicius,paulo,wamberto,malencar\}@iecom.org.br\\}
 }
 
 \maketitle
@@ -43,14 +41,16 @@ Recife, Brasil\\
 \subsection{Note on notation}
 Scalars and random variables are denoted as \textit{italic} small-case letters \textit{e.g.} $x$;
 vectors and random vectors are denoted as \textit{italic}, boldface, small-case letters \textit{e.g.} $\bm{x}$.
-A complex vector of length $n$ is defined as $\bm{x} \in \mathbb{C}^{1\times n}$. All
+The $n-$th component of a vector $\bm{x}$ is denoted as $x_n$.
+A complex vector of length $n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All
 vectors are column vectors. Matrices are denoted as \textit{italic}, boldface, capital
 letters as in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$.
 We define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any (finite or infinite) collection
 of random varibles $\bm{z}~=~\bm{x}~+~j\bm{y}$, $j \triangleq \sqrt{-1}$, such that
 $\bm{x}$ and $\bm{y}$ are iid jointly Gaussian with zero mean vector and covariance
 matrix given by $\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$
-means the conjugate transpose of $\bm{z}$.
+means the conjugate transpose of $\bm{z}$ and $\mathbb{E}$ denotes the expected value. The
+probability of an event $A$ is denoted as $\mathbb{P}(A)$.
 
 \section{The Acceptance-Rejection sampler in log-space}
 
@@ -60,17 +60,53 @@ means the conjugate transpose of $\bm{z}$.
 The spectrum sensing problem consists in deciding whether or not a given channel
 frequency band is being occupied by a licensed (primary) user and, in case that such
 frequency band is available, how to opportuniscally allocate secondary users
-such that...
+such that the interference on the primary user is negligible.
 
 From a probabilistic point of view, the spectrum sensing problem may be framed as
 a decision theory problem, as follows
 \begin{align}
-    \mathcal{H}_0:~& \bm{y} = \bm{w},\\
-    \mathcal{H}_1:~& \bm{y} = h\bm{s} + \bm{w},
+    H_0:~& \bm{y} = \bm{w},\\
+    H_1:~& \bm{y} = h\bm{s} + \bm{w},
 \end{align}
-in which $\bm{y} \in \mathbb{C}^{1\times n}$ is the decoded received vector,
- $\bm{w} \in \mathbb{C}^{1\times n}$ is complex Gaussian noise process with
- zero mean vector and covariance matrix given as $\sigma^2\bm{I}_n$
+in which $\bm{y} \in \mathbb{C}^{n\times 1}$ is the decoded received vector signal,
+$\bm{w} \in \mathbb{C}^{n\times 1}$ is complex Gaussian noise process with zero mean
+vector and covariance matrix given as $\sigma^2\bm{I}_n$, and $h$ is the channel gain.
+
+In~\cite{cardoso2017}, the authors have shown that the probability distribution of the
+energy statistic $\tilde{y} \triangleq \bm{y}^{\dagger}\bm{y}$ conditioned on the knowledge of $h$,
+in case that $\bm{s}$ is an $M$-PSK signal such that every symbol has the same probability of occurrence,
+$\mathbb{P}(s_n = s) = \frac{1}{M}$, is given as
+\begin{align}
+    p(\tilde{y} | h, H_1) = 1 - Q_{n}\left(\sqrt{\dfrac{2n|h|^2E_s}{\sigma^2}}, \sqrt{\dfrac{2\tilde{y}}{\sigma^2}}\right),
+\end{align}
+in which $Q_{n}$ is the Marcum-$Q$ function and $E_s$ is the energy per symbol.
+
+The pdf of $\tilde{y}$ can be written using the Law of Total Expectation
+\begin{align}
+    p(\tilde{y} | H_1) = \mathbb{E}\left[p(\tilde{y} | h, H_{1})\right]
+                 = \int_{-\infty}^{+\infty} p(\tilde{y} | h, H_1)p(h)\;\mathrm{d}h.
+\end{align}
+
+Recall that the energy detection rule can be expressed as
+\begin{equation}
+    d_\delta (\tilde{y}) =
+\left\{
+    \begin{array}{ll}
+        1, & \tilde{y} \geq \delta,\\
+        0, & \tilde{y} < \delta,
+    \end{array}
+\right.
+\end{equation}
+in which $\delta$ is a strictly positive real number known as energy threshold,
+and $d_\delta (\tilde{y}) = j,~j \in \{0,1\}$ means that the detector has decided
+in favor of the hypothesis $H_j$.
+
+As a result, the probabilities of false alarm and detection can
+be written as
+\begin{align}
+    p_f = 1 - p()\\
+    p_d =
+\end{align}
 
 \subsection{Parameter Estimation in Free Space Optics}
 
@@ -80,7 +116,8 @@ in which $\bm{y} \in \mathbb{C}^{1\times n}$ is the decoded received vector,
 
 \section*{Acknowledgement}
 The authors would like to thank the Federal University of Campina Grande (UFCG)
-and the Institute for Advanced Studies in Communications (Iecom).
+and the Institute for Advanced Studies in Communications (Iecom) for supporting
+this research.
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv, yacoub.bib}
