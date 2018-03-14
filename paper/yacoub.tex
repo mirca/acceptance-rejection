@@ -29,9 +29,10 @@ Campina Grande, Para\'iba, Brasil\\
     We present a well tested Python-based library for simulating and computing
     generalized fading channels, named \texttt{yacoub}. We describe the
     applicability of \texttt{yacoub} using examples in recent communications
-    systems challenges, namely: cooperative spectrum sensing, bit error rate computation
-    in generalized fading channel, and parameter estimation in free space optics.
-    The development of \texttt{yacoub} open source and its code is avaliable at
+    systems challenges, namely: spectrum sensing, bit error rate computation,
+    and parameter estimation in generalized fading channels. For the latter,
+    a Majorization-Minimization algorithm is derived. The development of
+    \texttt{yacoub} open source and its code is avaliable at
     \texttt{http://github.com/mirca/yacoub}.
 \end{abstract}
 
@@ -49,8 +50,10 @@ We define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any 
 of random varibles $\bm{z}~=~\bm{x}~+~j\bm{y}$, $j \triangleq \sqrt{-1}$, such that
 $\bm{x}$ and $\bm{y}$ are iid jointly Gaussian with zero mean vector and covariance
 matrix given by $\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$
-means the conjugate transpose of $\bm{z}$ and $\mathbb{E}$ denotes the expected value. The
-probability of an event $A$ is denoted as $\mathbb{P}(A)$.
+means the conjugate transpose of $\bm{z}$. The expectation value wrt a random variable $x$
+is denoted as $\mathbb{E}_x$. The probability of an event $A$ is denoted as $\mathbb{P}(A)$.
+The indicator function is denoted as $\mathbb{I}(\cdot)$ and it evaluates to $1$ if its
+argument is true and $0$ otherwise.
 
 \section{The Acceptance-Rejection sampler in log-space}
 
@@ -83,32 +86,59 @@ in which $Q_{n}$ is the Marcum-$Q$ function and $E_s$ is the energy per symbol.
 
 The pdf of $\tilde{y}$ can be written using the Law of Total Expectation
 \begin{align}
-    p(\tilde{y} | H_1) = \mathbb{E}\left[p(\tilde{y} | h, H_{1})\right]
+    p(\tilde{y} | H_1) = \mathbb{E}_{h}\left[p(\tilde{y} | h, H_{1})\right]
                  = \int_{-\infty}^{+\infty} p(\tilde{y} | h, H_1)p(h)\;\mathrm{d}h.
 \end{align}
 
 Recall that the energy detection rule can be expressed as
 \begin{equation}
-    d_\delta (\tilde{y}) =
-\left\{
-    \begin{array}{ll}
-        1, & \tilde{y} \geq \delta,\\
-        0, & \tilde{y} < \delta,
-    \end{array}
+    d_\delta (\tilde{y}) = \mathbb{I}(\tilde{y} > \delta)
 \right.
 \end{equation}
 in which $\delta$ is a strictly positive real number known as energy threshold,
-and $d_\delta (\tilde{y}) = j,~j \in \{0,1\}$ means that the detector has decided
+and $d_\delta (\tilde{y}) = j,~j \in \{0,1\}$, means that the detector has decided
 in favor of the hypothesis $H_j$.
 
-As a result, the probabilities of false alarm and detection can
+As a result, the probabilities of false alarm and miss detection can
 be written as
 \begin{align}
-    p_f = 1 - p()\\
-    p_d =
+    p_f &\triangleq \mathbb{P}\left(d_\delta(\tilde{y}) = 1 | H_0\right) = 1 -  p(\delta | H_0),\label{eq:pf} \\
+    p_d &\triangleq \mathbb{P}\left(d_\delta(\tilde{y}) = 0 | H_1\right) = \mathbb{E}_{h}\left[p(\delta, h | H_1)\right],
+\label{eq:pd}
 \end{align}
 
-\subsection{Parameter Estimation in Free Space Optics}
+\subsection{Parameter Estimation in $\alpha$-$\mu$ fading}
+
+The $\alpha$-$\mu$ fading probability density is given as
+\begin{align}
+p(h) = \dfrac{\alpha \mu^\mu h^{\alpha\mu -1}}{\Gamma(\mu)}\exp\left(-\mu h^\alpha\right),
+\end{align}
+$h \in \mathbb{R}_{+}$, $\alpha \in \mathbb{R}_{+}$, and $\mu \in \mathbb{R}_{+}$.
+
+Given a vector $\bm{h} \in \mathbb{R}^{n \times 1}$ of iid samples from the
+$\alpha-\mu$ distribution, we would like to estimate the value of $\alpha$.
+The pdf of $\bm{h}$ is given as
+\begin{align}
+    p(\bm{h}) = \prod_{i=1}^{n}p(h_i) = \prod_{i=1}^{n}\dfrac{\alpha \mu^\mu h_i^{\alpha\mu -1}}
+    {\Gamma(\mu)}\exp\left(-\mu h_i^\alpha\right)\\
+    = \left(\dfrac{\alpha \mu^\mu }{\Gamma(\mu)}\right)^{n}
+    \exp\left(-\mu\sum_{i=1}^{n}h_i^{\alpha}\right)\prod_{i=1}^{n}h_i^{\alpha\mu -1}
+\end{align}
+and the log likelihood function (up to an additive constant that does not depend
+upon $\alpha$) is given as
+\begin{align}
+    \log p(\bm{h}) \cong n\log\alpha - \mu\sum_{i=1}^{n}h_i^{\alpha} + \alpha\mu\sum_{i=1}^{n}\log h_i
+\end{align}
+Noting that
+\begin{equation}
+    \sum_{i=1}^{n}h_i^{\alpha} \geq \sum_{i=1}^{n} h_i^{\alpha_t} + (\alpha - \alpha_t)\sum_{i=1}^{n}h_i^{\alpha_t}\log h_i
+\end{equation}
+and therefore
+\begin{align}
+    \log p(\bm{h}) \leq n\log\alpha - \mu\left(\sum_{i=1}^{n} h_i^{\alpha_t} +
+    (\alpha - \alpha_t)\sum_{i=1}^{n}h_i^{\alpha_t}\log h_i\right) + \alpha\mu\sum_{i=1}^{n}\log h_i
+\end{align}
+
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
