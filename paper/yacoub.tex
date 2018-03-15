@@ -165,39 +165,6 @@ Therefore,
     \end{align}
 \end{figure*}
 
-
-
-
-\subsection{Parameter Estimation in $\alpha$-$\mu$ fading}
-
-The $\alpha$-$\mu$ fading probability density is given as
-\begin{align}
-p(h) = \dfrac{\alpha \mu^\mu h^{\alpha\mu -1}}{\Gamma(\mu)}\exp\left(-\mu h^\alpha\right),
-\end{align}
-$h \in \mathbb{R}_{+}$, $\alpha \in \mathbb{R}_{+}$, and $\mu \in \mathbb{R}_{+}$.
-
-Given a vector $\bm{h} \in \mathbb{R}^{n \times 1}$ of iid samples from the
-$\alpha-\mu$ distribution, we would like to estimate the value of...
-The pdf of $\bm{h}$ is given as
-\begin{align}
-    p(\bm{h}) = \prod_{i=1}^{n}p(h_i) = \prod_{i=1}^{n}\dfrac{\alpha \mu^\mu h_i^{\alpha\mu -1}}
-    {\Gamma(\mu)}\exp\left(-\mu h_i^\alpha\right)\\
-    = \left(\dfrac{\alpha \mu^\mu }{\Gamma(\mu)}\right)^{n}
-    \exp\left(-\mu\sum_{i=1}^{n}h_i^{\alpha}\right)\prod_{i=1}^{n}h_i^{\alpha\mu -1}
-\end{align}
-and the loglikelihood is given as
-\begin{align}
-    \log p(\bm{h}) \cong
-    &~n\left(\log\alpha + \mu \log \mu - \log \Gamma(\mu)\right) \nonumber\\
-    & - \mu\sum_{i=1}^{n}h_i^{\alpha} + \alpha\mu\sum_{i=1}^{n}\log h_i
-\end{align}
-
-Therefore, we want to solve
-\begin{align}
-    & \text{minimize} -\log p(\bm{h})\\
-    & \text{s.t.}~\alpha > 0, \bm{h} > 0 \nonumber
-\end{align}
-
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
 \section{Conclusions}
