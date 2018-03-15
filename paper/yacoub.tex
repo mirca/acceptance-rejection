@@ -30,8 +30,7 @@ Campina Grande, Para\'iba, Brasil\\
     generalized fading channels, named \texttt{yacoub}. We describe the
     applicability of \texttt{yacoub} using examples in recent communications
     systems challenges, namely: spectrum sensing, bit error rate computation,
-    and parameter estimation in generalized fading channels. For the latter,
-    a Majorization-Minimization algorithm is derived. The development of
+    and parameter estimation in generalized fading channels. The development of
     \texttt{yacoub} open source and its code is avaliable at
     \texttt{http://github.com/mirca/yacoub}.
 \end{abstract}
@@ -46,7 +45,7 @@ The $n-$th component of a vector $\bm{x}$ is denoted as $x_n$.
 A complex vector of length $n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All
 vectors are column vectors. Matrices are denoted as \textit{italic}, boldface, capital
 letters as in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$.
-We define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any (finite or infinite) collection
+We define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any collection
 of random varibles $\bm{z}~=~\bm{x}~+~j\bm{y}$, $j \triangleq \sqrt{-1}$, such that
 $\bm{x}$ and $\bm{y}$ are iid jointly Gaussian with zero mean vector and covariance
 matrix given by $\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$
@@ -56,6 +55,8 @@ The indicator function is denoted as $\mathbb{I}(\cdot)$ and it evaluates to $1$
 argument is true and $0$ otherwise.
 
 \section{The Acceptance-Rejection sampler in log-space}
+
+\section{Majorization-Minimization Algorithms}
 
 \section{Examples}
 \subsection{Spectrum Sensing in Complex Generalized Fading Channels}
@@ -107,6 +108,66 @@ be written as
 \label{eq:pd}
 \end{align}
 
+\subsection{Parameter Estimation in Nakagami-$m$ fading}
+\begin{align}
+p(\bm{h}) = & \prod_{i=1}^{n}\dfrac{2m^m}{\Gamma(m)\Omega^{m}}h_i^{2m - 1}
+              \exp\left(-\dfrac{mh_i^2}{\Omega}\right) \\
+          = & \left(\dfrac{2m^m}{\Gamma(m)\Omega^{m}}\right)^{n}
+          \exp\left(-\dfrac{m\sum_{i=1}^{n}h_i^2}{\Omega}\right) \prod_{i=1}^{n}h_i^{2m - 1}
+\end{align}
+\begin{align}
+    \log p(\bm{h}) \cong &~n\left(m\left(\log m - \log\Omega\right) - \log\Gamma(m)\right)\nonumber
+    \\ & -m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right)
+    \label{eq:loglike}
+\end{align}
+
+A direct maximum likelihood estimator for (\ref{eq:loglike}) has been investigated to be infeasible~\cite{paper}.
+
+Therefore, we use a Majorization-Minimization algorithm to find smooth
+and easy to optimize upper bounds for $\log p(\bm{h})$.
+
+Note that,
+\begin{align}
+    -\log\Gamma(m) \geq &-\log\Gamma(m_t) + (m - m_t) \nonumber \\
+                        &+ \left(m_t - \dfrac{1}{2}\right)\log (m_t-1)\nonumber\\
+                        &-\left(m - \dfrac{1}{2}\right)\log (m-1), m \geq m_t > 1
+\end{align}
+and
+\begin{align}
+    &m \log m \geq m\log m_t + m - m_t,~m > 0\\
+    & - m\log (m-1) \geq - \log(m-1) - (m-1)\left(\log (m_t-1) + \dfrac{m-1}{m_t-1} - 1\right),~m > 1
+\end{align}
+(in all inequalities, equality is achieved iff $m = m_t$).
+
+Therefore,
+\begin{figure*}[!htb]
+\begin{align}
+    - \log p(\bm{h}) \leq -n&\left(m\log m_t + 2(m - m_t) - m\log\Omega - \log\Gamma(m_t) +
+        \left(m_t - \dfrac{1}{2}\right)\log (m_t-1) - \dfrac{1}{2}\log(m-1)\right. \nonumber\\
+        &\left.-(m-1)\left(\log (m_t-1) + \dfrac{m-1}{m_t-1} - 1\right)
+        \right) +m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right), m \geq m_t > 1.
+\end{align}
+\end{figure*}
+
+\begin{figure*}[!htb]
+    \begin{align}
+    \dfrac{\partial g(m | m_t)}{\partial m} = -n\left(\log m_t + 2 - \log\Omega - \dfrac{1}{2(m - 1)}
+    - \left(\log (m_t - 1) - 1\right) + \dfrac{-2m + 1}{m_t - 1} \right)
+    + \dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i = 0
+    \end{align}
+\end{figure*}
+
+\begin{figure*}[!htb]
+    \begin{align}
+        2(m - 1) \left(-n\left(\log m_t + 2 - \log\Omega - (\log(m_t - 1) - 1)\right) + \dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i \right) + n - \dfrac{2n}{m_t-1}(-2m^2 + 3m - 1) = 0\\
+        2(m - 1) a + n - \dfrac{2n}{m_t-1}(-2m^2 + 3m - 1) = 0\\
+        m^2\left(\dfrac{4n}{m_t - 1}\right) + m\left(\dfrac{6n}{m_t - 1} + 2a\right) -2a + n\left(\dfrac{m_t +1}{m_t - 1}\right) = 0\\
+    \end{align}
+\end{figure*}
+
+
+
+
 \subsection{Parameter Estimation in $\alpha$-$\mu$ fading}
 
 The $\alpha$-$\mu$ fading probability density is given as
@@ -116,7 +177,7 @@ p(h) = \dfrac{\alpha \mu^\mu h^{\alpha\mu -1}}{\Gamma(\mu)}\exp\left(-\mu h^\alp
 $h \in \mathbb{R}_{+}$, $\alpha \in \mathbb{R}_{+}$, and $\mu \in \mathbb{R}_{+}$.
 
 Given a vector $\bm{h} \in \mathbb{R}^{n \times 1}$ of iid samples from the
-$\alpha-\mu$ distribution, we would like to estimate the value of $\alpha$.
+$\alpha-\mu$ distribution, we would like to estimate the value of...
 The pdf of $\bm{h}$ is given as
 \begin{align}
     p(\bm{h}) = \prod_{i=1}^{n}p(h_i) = \prod_{i=1}^{n}\dfrac{\alpha \mu^\mu h_i^{\alpha\mu -1}}
@@ -124,21 +185,18 @@ The pdf of $\bm{h}$ is given as
     = \left(\dfrac{\alpha \mu^\mu }{\Gamma(\mu)}\right)^{n}
     \exp\left(-\mu\sum_{i=1}^{n}h_i^{\alpha}\right)\prod_{i=1}^{n}h_i^{\alpha\mu -1}
 \end{align}
-and the log likelihood function (up to an additive constant that does not depend
-upon $\alpha$) is given as
+and the loglikelihood is given as
 \begin{align}
-    \log p(\bm{h}) \cong n\log\alpha - \mu\sum_{i=1}^{n}h_i^{\alpha} + \alpha\mu\sum_{i=1}^{n}\log h_i
-\end{align}
-Noting that
-\begin{equation}
-    \sum_{i=1}^{n}h_i^{\alpha} \geq \sum_{i=1}^{n} h_i^{\alpha_t} + (\alpha - \alpha_t)\sum_{i=1}^{n}h_i^{\alpha_t}\log h_i
-\end{equation}
-and therefore
-\begin{align}
-    \log p(\bm{h}) \leq n\log\alpha - \mu\left(\sum_{i=1}^{n} h_i^{\alpha_t} +
-    (\alpha - \alpha_t)\sum_{i=1}^{n}h_i^{\alpha_t}\log h_i\right) + \alpha\mu\sum_{i=1}^{n}\log h_i
+    \log p(\bm{h}) \cong
+    &~n\left(\log\alpha + \mu \log \mu - \log \Gamma(\mu)\right) \nonumber\\
+    & - \mu\sum_{i=1}^{n}h_i^{\alpha} + \alpha\mu\sum_{i=1}^{n}\log h_i
 \end{align}
 
+Therefore, we want to solve
+\begin{align}
+    & \text{minimize} -\log p(\bm{h})\\
+    & \text{s.t.}~\alpha > 0, \bm{h} > 0 \nonumber
+\end{align}
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
