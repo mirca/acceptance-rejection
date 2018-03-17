@@ -30,9 +30,10 @@ Campina Grande, Para\'iba, Brasil\\
     generalized fading channels, named \texttt{yacoub}. We describe the
     applicability of \texttt{yacoub} using examples in recent communications
     systems challenges, namely: spectrum sensing, bit error rate computation,
-    and parameter estimation in generalized fading channels. The development of
-    \texttt{yacoub} open source and its code is avaliable at
-    \texttt{http://github.com/mirca/yacoub}.
+    and parameter estimation in generalized fading channels. For the latter,
+    we develop an iterative algorithm based on the Majorization-Minimization
+    framework. The development of \texttt{yacoub} is open source and its code
+    is avaliable at \texttt{http://github.com/mirca/yacoub}.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -51,8 +52,8 @@ $\bm{x}$ and $\bm{y}$ are iid jointly Gaussian with zero mean vector and covaria
 matrix given by $\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$
 means the conjugate transpose of $\bm{z}$. The expectation value wrt a random variable $x$
 is denoted as $\mathbb{E}_x$. The probability of an event $A$ is denoted as $\mathbb{P}(A)$.
-The indicator function is denoted as $\mathbb{I}(\cdot)$ and it evaluates to $1$ if its
-argument is true and $0$ otherwise.
+The indicator function is denoted as $\mathbb{I}(\cdot)$ and it evaluates to one if its
+argument is true and zero otherwise.
 
 \section{The Acceptance-Rejection sampler in log-space}
 
@@ -126,46 +127,30 @@ A direct maximum likelihood estimator for (\ref{eq:loglike}) has been investigat
 Therefore, we use a Majorization-Minimization algorithm to find smooth
 and easy to optimize upper bounds for $\log p(\bm{h})$.
 
-Note that,
-\begin{align}
-    -\log\Gamma(m) \geq &-\log\Gamma(m_t) + (m - m_t) \nonumber \\
-                        &+ \left(m_t - \dfrac{1}{2}\right)\log (m_t-1)\nonumber\\
-                        &-\left(m - \dfrac{1}{2}\right)\log (m-1), m \geq m_t > 1
-\end{align}
-and
-\begin{align}
-    &m \log m \geq m\log m_t + m - m_t,~m > 0\\
-    & - m\log (m-1) \geq - \log(m-1) - (m-1)\left(\log (m_t-1) + \dfrac{m-1}{m_t-1} - 1\right),~m > 1
-\end{align}
-(in all inequalities, equality is achieved iff $m = m_t$).
-
-Therefore,
-\begin{figure*}[!htb]
-\begin{align}
-    - \log p(\bm{h}) \leq -n&\left(m\log m_t + 2(m - m_t) - m\log\Omega - \log\Gamma(m_t) +
-        \left(m_t - \dfrac{1}{2}\right)\log (m_t-1) - \dfrac{1}{2}\log(m-1)\right. \nonumber\\
-        &\left.-(m-1)\left(\log (m_t-1) + \dfrac{m-1}{m_t-1} - 1\right)
-        \right) +m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right), m \geq m_t > 1.
-\end{align}
-\end{figure*}
-
-\begin{figure*}[!htb]
-    \begin{align}
-    \dfrac{\partial g(m | m_t)}{\partial m} = -n\left(\log m_t + 2 - \log\Omega - \dfrac{1}{2(m - 1)}
-    - \left(\log (m_t - 1) - 1\right) + \dfrac{-2m + 1}{m_t - 1} \right)
-    + \dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i = 0
-    \end{align}
-\end{figure*}
-
-\begin{figure*}[!htb]
-    \begin{align}
-        2(m - 1) \left(-n\left(\log m_t + 2 - \log\Omega - (\log(m_t - 1) - 1)\right) + \dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i \right) + n - \dfrac{2n}{m_t-1}(-2m^2 + 3m - 1) = 0\\
-        2(m - 1) a + n - \dfrac{2n}{m_t-1}(-2m^2 + 3m - 1) = 0\\
-        m^2\left(\dfrac{4n}{m_t - 1}\right) + m\left(\dfrac{6n}{m_t - 1} + 2a\right) -2a + n\left(\dfrac{m_t +1}{m_t - 1}\right) = 0\\
-    \end{align}
-\end{figure*}
+\textit{A parte problem\'atica aqui \'e encontrar um limitante inferior
+para a fun\c c\~ao Gamma. Talvez serie de Taylor resolva.}
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
+
+Consider the system
+\begin{align}
+    \bm{y} = h\bm{s} + \bm{w}
+\end{align}
+in which $\bm{s} \in \mathbb{C}^{n\times 1}$ is a complex On-Off Keying (OOK) signal,
+$h$ is a complex $\alpha-\mu$ random variable and $\bm{w}$ is a complex Gaussian process
+with zero mean vector and covariance matrix equals $\sigma^2\bm{I}_n$, and $\bm{y}$ is
+the received complex vector signal.
+
+Assume that the OOK symbols are equiprobable and that there exist no interference
+between the in-phase and quadrature components, then the probability of one bit error
+is given as
+\begin{align}
+    p_{e} = \dfrac{1}{2}\left(\mathbb{P}\left(\hat{y}_i = 0 | s_{i} = 1\right)
+                            + \mathbb{P}\left(\hat{y}_i = 1 | s_{i} = 0\right)\right).
+\end{align}
+
+Assume that the decoded vector $\bm{\hat{y}}$ is estimated using the minimum distance decoding
+rule, i.e.,
 
 \section{Conclusions}
 
