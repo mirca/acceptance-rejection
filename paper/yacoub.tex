@@ -39,7 +39,7 @@ Campina Grande, Para\'iba, Brasil\\
 \IEEEpeerreviewmaketitle
 \section{Introduction}
 
-\subsection{Note on notation}
+\subsection*{Note on notation}
 Scalars and random variables are denoted as \textit{italic} small-case letters \textit{e.g.} $x$;
 vectors and random vectors are denoted as \textit{italic}, boldface, small-case letters \textit{e.g.} $\bm{x}$.
 The $n-$th component of a vector $\bm{x}$ is denoted as $x_n$.
@@ -128,7 +128,13 @@ Therefore, we use a Majorization-Minimization algorithm to find smooth
 and easy to optimize upper bounds for $\log p(\bm{h})$.
 
 \textit{A parte problem\'atica aqui \'e encontrar um limitante inferior
-para a fun\c c\~ao Gamma. Talvez serie de Taylor resolva.}
+para a fun\c c\~ao Gamma. Talvez serie de Taylor resolva. Isto \'e, precisamos
+encontrar inequacoes da forma}
+
+\begin{align}
+    m\log m \geq \\
+    -\log \Gamma(m) \geq
+\end{align}
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
