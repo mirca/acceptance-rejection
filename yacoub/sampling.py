@@ -34,8 +34,8 @@ def rejection_sampling(pdf, x, n_samples, *args):
 
     while len(accepted_samples) < n_samples:
         unif_x = np.random.uniform(low=x_min, high=x_max, size=n_samples)
-        unif_y = np.random.uniform(low=pdf_min, high=1., size=n_samples)
-        accept = np.log(unif_y) <= (np.log(pdf(unif_x, *args)) - math.log(pdf_max))
+        unif_y = np.random.uniform(low=pdf_min, high=pdf_max, size=n_samples)
+        accept = unif_y <= pdf(unif_x, *args)
         accepted_samples = np.concatenate([accepted_samples, unif_x[accept]])
 
     return accepted_samples[:n_samples]
