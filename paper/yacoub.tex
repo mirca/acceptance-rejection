@@ -28,35 +28,38 @@ Campina Grande, Para\'iba, Brasil\\
 \begin{abstract}
     We present a well tested Python-based library for simulating and computing
     generalized fading channels, named \texttt{yacoub}. We describe the
-    applicability of \texttt{yacoub} using examples in recent communications
-    systems challenges, namely: spectrum sensing, bit error rate computation,
-    and parameter estimation in generalized fading channels. For the latter,
-    we develop an iterative algorithm based on the Majorization-Minimization
-    framework, which allows reliable estimation of the fading parameter.
-    The development of \texttt{yacoub} is open source and its code
-    is avaliable at \texttt{http://github.com/mirca/yacoub}.
+    applicability of \texttt{yacoub} using examples in scenarios of communications
+    channels impaired by generalized fading, namely: spectrum sensing, bit error
+    rate computation, and fading estimation. For the latter, we develop an iterative
+    algorithm using the Majorization-Minimization framework, which allows reliable
+    estimation of the fading parameter. The development of \texttt{yacoub} is open
+    source and its code along with examples are avaliable at
+    \texttt{http://github.com/mirca/yacoub}.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
 \section{Introduction}
 
-\subsection*{Note on notation}
-Scalars and random variables are denoted as \textit{italic}, small-case letters \textit{e.g.} $x$;
-sets and events are denoted as \textit{italic}, capital letters \textit{e.g.}, $A$;
-vectors and random vectors are denoted as \textit{italic}, boldface, small-case letters \textit{e.g.} $\bm{x}$.
-The $n-$th component of a vector $\bm{x}$ is denoted as $x_n$.
-A complex vector of length $n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All
-vectors are column vectors. Matrices are denoted as \textit{italic}, boldface, capital
-letters as in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$.
-We define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any collection
-of random variables $\bm{z}~=~\bm{x}~+~j\bm{y}$, $j \triangleq \sqrt{-1}$, such that
-$\bm{x}$ and $\bm{y}$ are i.i.d. jointly Gaussian, with zero mean vector and covariance
-matrix given by $\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$
-means the conjugate transpose of $\bm{z}$. The expectation value w.r.t. to the porbability
-distribution of a random variable $x$ is denoted as $\mathbb{E}_x$. The probability of an
-event $A$ is denoted as $\mathbb{P}(A)$. The indicator function is denoted as $\mathbb{I}(\cdot)$,
-it evaluates to one if its argument is true and zero otherwise. For any given two real functions $f$ and $g$
-defined on the same domain $D$, $f \cong g$ means that there exist a constant $c$ such that
+\subsection*{Notation}
+Scalars and random variables are denoted as \textit{italic}, small-case letters
+\textit{e.g.} $x$; sets and events are denoted as \textit{italic}, capital
+letters \textit{e.g.}, $A$; vectors and random vectors are denoted as
+\textit{italic}, boldface, small-case letters \textit{e.g.} $\bm{x}$. The $n-$th
+component of a vector $\bm{x}$ is denoted as $x_n$. A complex vector of length
+$n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All vectors are column
+vectors. Matrices are denoted as \textit{italic}, boldface, capital letters as
+in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$. We
+define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any
+collection of random variables $\bm{z}~=~\bm{x}~+~j\bm{y}$,
+$j \triangleq \sqrt{-1}$, such that $\bm{x}$ and $\bm{y}$ are i.i.d. jointly
+Gaussian, with zero mean vector and covariance matrix given by
+$\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$ means
+the conjugate transpose of $\bm{z}$. The expectation value w.r.t. to the
+probability distribution of a random variable $x$ is denoted as $\mathbb{E}_x$.
+The probability of an event $A$ is denoted as $\mathbb{P}(A)$. The indicator
+function is denoted as $\mathbb{I}(\cdot)$, it evaluates to one if its argument
+is true and zero otherwise. For any given two real functions $f$ and $g$ defined
+on the same domain $D$, $f \cong g$ means that there exist a constant $c$ such that
 $f(\bm{x}) = g(\bm{x}) + c$, $\forall~ \bm{x} \in D$.
 
 \section{The Acceptance-Rejection sampler in log-space}
@@ -128,37 +131,47 @@ And the log likelihood function (up to an additive constant) is given as
     \label{eq:loglike}
 \end{align}
 
-A direct maximum likelihood estimator for (\ref{eq:loglike}) has been
+A direct maximum likelihood estimator (MLE) for (\ref{eq:loglike}) has been
 investigated to be infeasible~\cite{paper}.
 
 Therefore, we use a Majorization-Minimization algorithm to find smooth
-and easy to optimize upper bounds for $\log p(\bm{h})$. More precisely,
+and easy to optimize lower bounds for $\log p(\bm{h})$. More precisely,
 we need to find lower bounds for $m\log m$ and $-\log \Gamma(m)$ for $m \geq \frac{1}{2}$.
-The former function is convex for $m \geq \frac{1}{2}$, hence it can be lower bounded
+The former function is convex for $m \geq 0$, hence it can be lower bounded
 by its first order Taylor series as
 \begin{align}
     m \log m \geq m(1 + \log m_t) - m_t,
     \label{eq:lower-bound-mlogm}
 \end{align}
-equality is achived at $m = m_t$. The function $-\log \Gamma(m)$, on the other hand,
-is concave nonetheless it can be lower bounded by its second order Taylor series expansion
-as
+The function $-\log \Gamma(m)$ is concave, therefore, it can be lower bounded
+by its second order Taylor series expansion as
 \begin{align}
     -\log \Gamma(m) \geq& - \log \Gamma(m_t) - \psi(m_t) (m - m_t)\nonumber\\
                         & - \frac{\psi'\left(\frac{1}{2}\right)}{2}(m - m_t) ^ 2,
-                        ~m \geq \frac{1}{2},~m_t \geq \frac{1}{2}
+                        ~m \geq \frac{1}{2},~m_t \geq \frac{1}{2},
     \label{eq:lower-bound-negloggamma}
 \end{align}
-in which $\psi(x) = \dfrac{\Gamma'(x)}{\Gamma(x)}$ is known as the digamma function;
-equality is achieved at $m = m_t$.
+in which $\psi(x) = \dfrac{\Gamma'(x)}{\Gamma(x)}$ is known as the digamma function.
+For both inequalities presented above, equality is achieved at $m = m_t$.
 
 Substituting (\ref{eq:lower-bound-mlogm}) and (\ref{eq:lower-bound-negloggamma}) into
-(\ref{eq:loglike}), a valid lower bound for $\log p(\bm{h})$ is obtained in~(\ref{eq:surrogate}).
+(\ref{eq:loglike}), a lower bound for $\log p(\bm{h})$ is obtained in~(\ref{eq:surrogate}).
 Due to the simple form of $g(m | m_t)$, its maximizer can be found in closed form, and
 an updating rule for the MLE can be written as
 \begin{align}
-    m_{t+1} = \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t)\right.\nonumber\\
+    m_{t+1} = 1 + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t)
+    + \right.\nonumber\\
     &+ \left.\dfrac{1}{n} \left(2\sum_{i=1}^{n}\log h_i - \frac{\sum_{i=1}^{n}h_i^2}{\Omega}\right)\right)
+\end{align}
+
+Additionally,
+note that $m_{t+1}$ is an estimator of the true parameter value $m$. Its expected value,
+conditioned on the knowledge of $m_t$, is given as
+\begin{align}
+    \mathbb{E}(m_{t+1} | m_t) = 1 + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t)
+    + \right.\nonumber\\
+&+ \left.\dfrac{1}{n} \left(2\sum_{i=1}^{n}\mathbb{E}(\log h_i)
+- \frac{\sum_{i=1}^{n}\mathbb{E}\left(h_i^2\right)}{\Omega}\right)\right)
 \end{align}
 
 \begin{figure*}[!htb]
@@ -169,8 +182,6 @@ an updating rule for the MLE can be written as
     \label{eq:surrogate}
 \end{align}
 \end{figure*}
-
-
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
