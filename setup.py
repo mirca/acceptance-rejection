@@ -10,7 +10,7 @@ from os import path
 if "release" in sys.argv[-1]:
     os.system("python setup.py sdist")
     os.system("twine upload dist/*")
-    os.system("rm -rf dist/yacoub*")
+    os.system("rm -rf dist/maoud*")
     sys.exit()
 
 here = path.abspath(path.dirname(__file__))
@@ -20,12 +20,12 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='yacoub',
-    packages=['yacoub'],
+    name='maoud',
+    packages=['maoud'],
     version='0.1.dev0',
-    description='Simulating fading channels in tensorflow',
+    description='Simulating generalized fading channels',
     long_description=long_description,
-    url='https://github.com/mirca/yacoub',
+    url='https://github.com/mirca/maoud',
     author='mirca',
     author_email='jvmirca@gmail.com',
     license='MIT',

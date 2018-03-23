@@ -13,7 +13,7 @@
 \usepackage{tabularx,colortbl}
 
 \begin{document}
-\title{\texttt{mady}: a Python package for Simulating Generalized Fading Channels}
+\title{\texttt{maoud}: a Python package for Simulating Generalized Fading Channels}
 
 \author{\IEEEauthorblockN{Jos\'e~V.~de~M.~Cardoso,~Wamberto~J.~L.~Queiroz,}
         \IEEEauthorblockN{~Paulo~R.~Lins~J\'unior,~and~Marcelo~S.~Alencar,~\textit{IEEE Senior Member}}
@@ -27,14 +27,14 @@ Campina Grande, Para\'iba, Brasil\\
 
 \begin{abstract}
     We present a well tested Python-based library for simulating and computing
-    generalized fading channels, named \texttt{mady}. We describe the
-    applicability of \texttt{mady} using examples in scenarios of communications
+    generalized fading channels, named \texttt{maoud}. We describe the
+    applicability of \texttt{maoud} using examples in scenarios of communications
     channels impaired by generalized fading, namely: spectrum sensing, bit error
     rate computation, and fading estimation. For the latter, we develop an iterative
     algorithm using the Majorization-Minimization framework, which allows reliable
-    estimation of the fading parameter. The development of \texttt{mady} is open
+    estimation of the fading parameter. The development of \texttt{maoud} is open
     source and its code along with examples are avaliable at
-    \texttt{http://github.com/mirca/mady}.
+    \texttt{http://github.com/mirca/maoud}.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -132,7 +132,7 @@ And the log likelihood function (up to an additive constant) is given as
 \end{align}
 
 A direct maximum likelihood estimator (MLE) for (\ref{eq:loglike}) has been
-investigated to be infeasible~\cite{paper}.
+investigated to be infeasible~\cite{cheng2001}.
 
 Therefore, we use a Majorization-Minimization algorithm to find smooth
 and easy to optimize lower bounds for $\log p(\bm{h})$. More precisely,
@@ -168,10 +168,20 @@ Additionally,
 note that $m_{t+1}$ is an estimator of the true parameter value $m$. Its expected value,
 conditioned on the knowledge of $m_t$, is given as
 \begin{align}
-    \mathbb{E}(m_{t+1} | m_t) = 1 + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t)
-    + \right.\nonumber\\
-&+ \left.\dfrac{1}{n} \left(2\sum_{i=1}^{n}\mathbb{E}(\log h_i)
-- \frac{\sum_{i=1}^{n}\mathbb{E}\left(h_i^2\right)}{\Omega}\right)\right)
+ \mathbb{E}(m_{t+1} | m_t) = 1 + \dfrac{1}{\psi'(\frac{1}{2})}\left(\log \frac{m_t}{\Omega} - \psi(m_t)
+    + \dfrac{2}{n}\sum_{i=1}^{n}\mathbb{E}(\log h_i)\right)
+\end{align}
+
+Its variance, also conditioned on the knowledge of $m_t$, is given as
+\begin{align}
+    \mathrm{var}(m_{t+1} | m_t) = \left(\dfrac{1}{n\psi'(\frac{1}{2})}\right)^2
+    \mathrm{var}\left(2\sum_{i=1}^{n}\log h_i
+    - \frac{\sum_{i=1}^{n}h_i^2}{\Omega}\right).
+\end{align}
+
+The Cram\'er-Rao Lower Bound for any unbiased estimator of $m$, say $\hat{m}$, is given as~\cite{cheng2001}
+\begin{align}
+    \mathrm{var}(\hat{m}) = \dfrac{1}{n\left(\psi'(m) - \frac{1}{m}\right)}
 \end{align}
 
 \begin{figure*}[!htb]
@@ -213,6 +223,6 @@ and the Institute for Advanced Studies in Communications (Iecom) for supporting
 this research.
 
 \bibliographystyle{IEEEtran}
-\bibliography{IEEEabrv, mady.bib}
+\bibliography{manuscript.bib}
 
 \end{document}

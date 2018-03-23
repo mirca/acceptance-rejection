@@ -4,4 +4,7 @@ __pycache__
 .*.swo
 .*.swp
 .eggs/
-yacoub.egg-info/
+maoud.egg-info/
+*.log
+*.aux
+*.out
