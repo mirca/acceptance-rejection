@@ -53,18 +53,17 @@ define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any
 collection of random variables $\bm{z}~=~\bm{x}~+~j\bm{y}$,
 $j \triangleq \sqrt{-1}$, such that $\bm{x}$ and $\bm{y}$ are i.i.d. jointly
 Gaussian, with zero mean vector and covariance matrix given by
-$\mathbb{E}\left[\bm{z}\bm{z}^{\dagger}\right]$, in which $\bm{z}^\dagger$ means
-the conjugate transpose of $\bm{z}$. The expectation value w.r.t. to the
+$\mathbb{E}\left(\bm{z}\bm{z}^{\dagger}\right)$, in which $\bm{z}^\dagger$ means
+the conjugate transpose of $\bm{z}$. The expectation value with respect to the
 probability distribution of a random variable $x$ is denoted as $\mathbb{E}_x$.
 The probability of an event $A$ is denoted as $\mathbb{P}(A)$. The indicator
 function is denoted as $\mathbb{I}(\cdot)$, it evaluates to one if its argument
 is true and zero otherwise. For any given two real functions $f$ and $g$ defined
 on the same domain $D$, $f \cong g$ means that there exist a constant $c$ such that
-$f(\bm{x}) = g(\bm{x}) + c$, $\forall~ \bm{x} \in D$.
+$f(\bm{x}) = g(\bm{x}) + c$, $\forall~ \bm{x} \in D$. The natural logarithm of a
+scalar $x > 0$ is denoted as $\log x$.
 
 \section{The Acceptance-Rejection sampler in log-space}
-
-\section{Majorization-Minimization Algorithms}
 
 \section{Examples}
 \subsection{Spectrum Sensing in Complex Generalized Fading Channels}
@@ -89,9 +88,9 @@ energy statistic $\tilde{y} \triangleq \bm{y}^{\dagger}\bm{y}$ conditioned on th
 in case that $\bm{s}$ is an $M$-PSK signal such that every symbol has the same probability of occurrence,
 $\mathbb{P}(s_n = s) = \frac{1}{M}$, is given as
 \begin{align}
-    p(\tilde{y} | h, H_1) = 1 - Q_{n}\left(\sqrt{\dfrac{2n|h|^2E_s}{\sigma^2}}, \sqrt{\dfrac{2\tilde{y}}{\sigma^2}}\right),
+    p(\tilde{y} | h, H_1) = 1 - \mathrm{Q}_{n}\left(\sqrt{\dfrac{2n|h|^2E_s}{\sigma^2}}, \sqrt{\dfrac{2\tilde{y}}{\sigma^2}}\right),
 \end{align}
-in which $Q_{n}$ is the Marcum-$Q$ function and $E_s$ is the energy per symbol.
+in which $\mathrm{Q}_{n}$ is the Marcum-$\mathrm{Q}$ function and $E_s$ is the energy per symbol.
 
 The pdf of $\tilde{y}$ can be written using the Law of Total Expectation
 \begin{align}
@@ -119,15 +118,15 @@ be written as
 \subsection{Parameter Estimation in Nakagami-$m$ fading}
 The Nakagami-$m$ density is given as
 \begin{align}
-    p(\bm{h})& = \prod_{i=1}^{n}\dfrac{2m^m}{\Gamma(m)\Omega^{m}}h_i^{2m - 1}
+    p(\bm{h} &| m, \Omega) = \prod_{i=1}^{n}\dfrac{2m^m}{\Gamma(m)\Omega^{m}}h_i^{2m - 1}
               \exp\left(-\dfrac{mh_i^2}{\Omega}\right) \nonumber \\
           = & \left(\dfrac{2m^m}{\Gamma(m)\Omega^{m}}\right)^{n}
           \exp\left(-\dfrac{m\sum_{i=1}^{n}h_i^2}{\Omega}\right) \prod_{i=1}^{n}h_i^{2m - 1}
 \end{align}
-And the log likelihood function (up to an additive constant) is given as
+And the log-likelihood function (up to an additive constant) is given as
 \begin{align}
-\log p(\bm{h}) \cong &~n\left(m\left(\log m - \log\Omega\right) - \log\Gamma(m)\right)\nonumber
-    \\ & -m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right)
+\log p(\bm{h} | m, \Omega) \cong &~n\left(m\left(\log m - \log\Omega\right) - \log\Gamma(m)\right)\nonumber
+    \\ & -m\sum_{i=1}^{n}\left(\dfrac{h_i^2}{\Omega} - 2\log h_i\right)
     \label{eq:loglike}
 \end{align}
 
@@ -135,7 +134,7 @@ A direct maximum likelihood estimator (MLE) for (\ref{eq:loglike}) has been
 investigated to be infeasible~\cite{cheng2001}.
 
 Therefore, we use a Majorization-Minimization algorithm to find smooth
-and easy to optimize lower bounds for $\log p(\bm{h})$. More precisely,
+and easy to optimize lower bounds for $\log p(\bm{h}| m, \Omega)$. More precisely,
 we need to find lower bounds for $m\log m$ and $-\log \Gamma(m)$ for $m \geq \frac{1}{2}$.
 The former function is convex for $m \geq 0$, hence it can be lower bounded
 by its first order Taylor series as
@@ -159,29 +158,42 @@ Substituting (\ref{eq:lower-bound-mlogm}) and (\ref{eq:lower-bound-negloggamma})
 Due to the simple form of $g(m | m_t)$, its maximizer can be found in closed form, and
 an updating rule for the MLE can be written as
 \begin{align}
-    m_{t+1} = 1 + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t)
-    + \right.\nonumber\\
-    &+ \left.\dfrac{1}{n} \left(2\sum_{i=1}^{n}\log h_i - \frac{\sum_{i=1}^{n}h_i^2}{\Omega}\right)\right)
+    m_{t+1} = m_t + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t) \right.\nonumber\\
+    &\left.+ \dfrac{1}{n} \sum_{i=1}^{n}\left(2\log h_i - \frac{h_i^2}{\Omega}\right)\right)
 \end{align}
 
 Additionally,
-note that $m_{t+1}$ is an estimator of the true parameter value $m$. Its expected value,
-conditioned on the knowledge of $m_t$, is given as
+note that $m_{t+1}$, $t \in \mathbb{N}$, is a sequence of estimators that converges to the maximum
+likelihood estimator of the parameter value $m$.
+The expected value of $m_{t+1}$, conditioned on the knowledge of $m_t$, is given as
 \begin{align}
- \mathbb{E}(m_{t+1} | m_t) = 1 + \dfrac{1}{\psi'(\frac{1}{2})}\left(\log \frac{m_t}{\Omega} - \psi(m_t)
-    + \dfrac{2}{n}\sum_{i=1}^{n}\mathbb{E}(\log h_i)\right)
+    \mathbb{E}(m_{t+1} | m_t) = m_t + \dfrac{1}{\psi'(\frac{1}{2})}\left(\log \frac{m_t}{m} + \psi(m) - \psi(m_t)\right),
+\end{align}
+in which we used the fact that~\cite{gradshteyn2007}
+\begin{align}
+    \mathbb{E}\left(\log h_i\right)~=~\frac{1}{2}\left(\psi(m)-\log\left(\frac{m}{\Omega}\right)\right).
 \end{align}
 
-Its variance, also conditioned on the knowledge of $m_t$, is given as
+Most importantly, as $m_t \rightarrow m$, then $\mathbb{E}(m_{t+1} | m_t) \rightarrow m$.
+
+The variance of $m_{t+1}$, given $m_t$, can be expressed as
 \begin{align}
-    \mathrm{var}(m_{t+1} | m_t) = \left(\dfrac{1}{n\psi'(\frac{1}{2})}\right)^2
-    \mathrm{var}\left(2\sum_{i=1}^{n}\log h_i
-    - \frac{\sum_{i=1}^{n}h_i^2}{\Omega}\right).
+    \mathrm{var}(m_{t+1} | m_t) = \dfrac{1}{n\left(\psi'(\frac{1}{2})\right)^2}
+    \mathrm{var}\left(2\log h_1 - \frac{h_1^2}{\Omega}\right).
 \end{align}
+
+\begin{align}
+    \mathbb{E}\left(\log ^ 2 h_i\right) = \frac{1}{4}\left\{\left[\psi(m) - \log\frac{m}{\Omega}\right]^2 + \zeta(2, m)\right\}
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics{figures/mm.eps}
+\end{figure}
 
 The Cram\'er-Rao Lower Bound for any unbiased estimator of $m$, say $\hat{m}$, is given as~\cite{cheng2001}
 \begin{align}
-    \mathrm{var}(\hat{m}) = \dfrac{1}{n\left(\psi'(m) - \frac{1}{m}\right)}
+    \mathrm{var}(\hat{m}) \geq \dfrac{1}{n\left(\psi'(m) - \frac{1}{m}\right)}
 \end{align}
 
 \begin{figure*}[!htb]
