@@ -40,14 +40,31 @@ Campina Grande, Para\'iba, Brasil\\
 \IEEEpeerreviewmaketitle
 \section{Introduction}
 
+The study of wireless communications systems heavily depends on channel simulation.
+By channel simulation, we mean the generation of samples from a random variable
+which resembles the effects of real communications channels on the transmitted signal.
+
+Although accurate and precise distributions for generalized fading have been
+estabilished in the literature, such as $\alpha-\mu$, $\kappa-\mu$, and
+$\eta-\mu$, the generation of samples following these distributions is usually
+a time-consuming task. In~\cite{}, an efficient algorithm for generation of samples
+from those distributions was proposed, however, there are neither open nor
+closed source implementations available to the scientific community.
+
+In this paper, we present an open source Python package, named \texttt{maoud},
+for generation of samples following the $\alpha-\mu$, $\kappa-\mu$, and
+$\eta-\mu$ distributions. The usefullness of $\texttt{maoud}$ is illustrated
+through examples involving spectrum sensing, bit error rate computation, and
+fading estimation.
+
 \subsection*{Notation}
-Scalars and random variables are denoted as \textit{italic}, small-case letters
-\textit{e.g.} $x$; sets and events are denoted as \textit{italic}, capital
+Scalars and random variables are denoted as italic, small-case letters
+\textit{e.g.} $x$; sets and events are denoted as italic, capital
 letters \textit{e.g.}, $A$; vectors and random vectors are denoted as
-\textit{italic}, boldface, small-case letters \textit{e.g.} $\bm{x}$. The $n-$th
+italic, boldface, small-case letters \textit{e.g.} $\bm{x}$. The $n-$th
 component of a vector $\bm{x}$ is denoted as $x_n$. A complex vector of length
 $n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All vectors are column
-vectors. Matrices are denoted as \textit{italic}, boldface, capital letters as
+vectors. Matrices are denoted as italic, boldface, capital letters as
 in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$. We
 define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any
 collection of random variables $\bm{z}~=~\bm{x}~+~j\bm{y}$,
@@ -63,7 +80,7 @@ on the same domain $D$, $f \cong g$ means that there exist a constant $c$ such t
 $f(\bm{x}) = g(\bm{x}) + c$, $\forall~ \bm{x} \in D$. The natural logarithm of a
 scalar $x > 0$ is denoted as $\log x$.
 
-\section{The Acceptance-Rejection sampler in log-space}
+\section{Rejection sampling}
 
 \section{Examples}
 \subsection{Spectrum Sensing in Complex Generalized Fading Channels}
@@ -142,23 +159,29 @@ by its first order Taylor series as
     m \log m \geq m(1 + \log m_t) - m_t,
     \label{eq:lower-bound-mlogm}
 \end{align}
-The function $-\log \Gamma(m)$ is concave, therefore, it can be lower bounded
+The function $-\log \Gamma(m)$ is concave for $m > 0$, therefore, it can be lower bounded
 by its second order Taylor series expansion as
 \begin{align}
     -\log \Gamma(m) \geq& - \log \Gamma(m_t) - \psi(m_t) (m - m_t)\nonumber\\
                         & - \frac{\psi'\left(\frac{1}{2}\right)}{2}(m - m_t) ^ 2,
-                        ~m \geq \frac{1}{2},~m_t \geq \frac{1}{2},
     \label{eq:lower-bound-negloggamma}
 \end{align}
 in which $\psi(x) = \dfrac{\Gamma'(x)}{\Gamma(x)}$ is known as the digamma function.
 For both inequalities presented above, equality is achieved at $m = m_t$.
 
 Substituting (\ref{eq:lower-bound-mlogm}) and (\ref{eq:lower-bound-negloggamma}) into
-(\ref{eq:loglike}), a lower bound for $\log p(\bm{h})$ is obtained in~(\ref{eq:surrogate}).
+(\ref{eq:loglike}), a lower bound for $\log p(\bm{h})$ is obtained as follows
+\begin{align}
+    &g(m | m_t) = n\left.\Bigg[-m\log\Omega  + m(1 + \log m_t) - m_t\right.\nonumber\\
+    & -\log \Gamma(m_t) - \psi(m_t) (m - m_t) \left. - \frac{\psi'\left(\frac{1}{2}\right)}{2}(m - m_t)^2\right]\nonumber\\
+    & -m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right)
+    \label{eq:surrogate}
+\end{align}
+
 Due to the simple form of $g(m | m_t)$, its maximizer can be found in closed form, and
 an updating rule for the MLE can be written as
 \begin{align}
-    m_{t+1} = m_t + \dfrac{1}{\psi'(\frac{1}{2})}&\left(1 + \log \frac{m_t}{\Omega} - \psi(m_t) \right.\nonumber\\
+    m_{t+1} = m_t + \dfrac{1}{\psi'(\frac{1}{2})}&\left.\Bigg(1 + \log \frac{m_t}{\Omega} - \psi(m_t) \right.\nonumber\\
     &\left.+ \dfrac{1}{n} \sum_{i=1}^{n}\left(2\log h_i - \frac{h_i^2}{\Omega}\right)\right)
 \end{align}
 
@@ -183,7 +206,14 @@ The variance of $m_{t+1}$, given $m_t$, can be expressed as
 \end{align}
 
 \begin{align}
-    \mathbb{E}\left(\log ^ 2 h_i\right) = \frac{1}{4}\left\{\left[\psi(m) - \log\frac{m}{\Omega}\right]^2 + \zeta(2, m)\right\}
+    \mathbb{E}\left(\log ^ 2 h_1\right) &= \frac{1}{4}\left\{\left[\psi(m) - \log\frac{m}{\Omega}\right]^2 + \zeta(2, m)\right\}\\
+    \mathbb{E}\left(h_1^2\log h_1\right) &= \frac{\Omega}{2}\left(\psi(m+1) - \log\frac{m}{\Omega}\right)\\
+    \mathbb{E}\left(h_1^2\right) &= \Omega\\
+    \mathbb{E}\left(h_1^4\right) &= \Omega^2\frac{m+1}{m}
+\end{align}
+
+\begin{align}
+    \mathrm{var}(m_{t+1} | m_t) = \dfrac{\zeta(2, m) + \frac{1}{m} + 2 (\psi(m) - \psi(m+1))}{n\left(\psi'(\frac{1}{2})\right)^2}
 \end{align}
 
 \begin{figure}
@@ -195,15 +225,6 @@ The Cram\'er-Rao Lower Bound for any unbiased estimator of $m$, say $\hat{m}$, i
 \begin{align}
     \mathrm{var}(\hat{m}) \geq \dfrac{1}{n\left(\psi'(m) - \frac{1}{m}\right)}
 \end{align}
-
-\begin{figure*}[!htb]
-\begin{align}
-    g(m | m_t) = n\left(-m\log\Omega  + m(1 + \log m_t) - m_t
-    -\log \Gamma(m_t) - \psi(m_t) (m - m_t) - \frac{\psi'\left(\frac{1}{2}\right)}{2}(m - m_t)^2\right)
-    -m\left(\dfrac{\sum_{i=1}^{n}h_i^2}{\Omega} - 2\sum_{i=1}^{n}\log h_i\right)
-    \label{eq:surrogate}
-\end{align}
-\end{figure*}
 
 \subsection{BER in Complex $\alpha-\mu$ Fading}
 
