@@ -36,7 +36,7 @@ class Distribution(ABC):
         size : int
             Size of the sample (number of realizations).
         """
-        return rejection_sampling(self.pdf, x, size)
+        return rejection_sampling(self.pdf, x, size)[0]
 
 
 class ComplexDistribution(Distribution):
@@ -60,8 +60,11 @@ class ComplexDistribution(Distribution):
         if len(x) != len(y):
             raise ValueError("x and y must have the same length.")
 
-        return (rejection_sampling(self.pdf, x, size)
-                + 1j * rejection_sampling(self.pdf, y, size))
+        return (rejection_sampling(self.pdf, x, size)[0]
+                + 1j * rejection_sampling(self.pdf, y, size)[0])
+
+    def envelope_pdf(self, x):
+        pass
 
 
 class AlphaMu(Distribution):
@@ -152,6 +155,9 @@ class ComplexAlphaMu(ComplexDistribution):
         return (self.mu ** (self.mu * 0.5) * np.abs(x) ** (self.mu - 1.0) * np.exp(-self.mu * x * x)
                 / sps.gamma(self.mu * 0.5))
 
+    def envelope_pdf(self, x):
+        return AlphaMu(self.alpha, self.mu).pdf(x)
+
 class ComplexEtaMu(ComplexDistribution):
     def __init__(self, eta, mu):
         self.eta = eta
@@ -159,7 +165,7 @@ class ComplexEtaMu(ComplexDistribution):
 
     def pdf(self, x):
         return ((2.0 * self.mu) ** self.mu * np.abs(x) ** (2.0 * self.mu - 1.0)
-                * np.exp(-2.0 * self.mu * x * x/ (1.0 - self.eta))
+                * np.exp(-2.0 * self.mu * x * x / (1.0 - self.eta))
                 / (sps.gamma(self.mu) * np.power(1.0 - self.eta, self.mu)))
 
 
@@ -186,5 +192,5 @@ class ComplexKappaMu(object):
                 / (2.0 * sigma2 * np.abs(q) ** (0.5 * self.mu - 1.0) * np.cosh(q * x / sigma2)))
 
     def rvs(self, x, y, size):
-        return (rejection_sampling(self.real_part, x, y, size)
-                + 1j * rejection_sampling(self.imag_part, x, y, size))
+        return (rejection_sampling(self.real_part, x, y, size)[0]
+                + 1j * rejection_sampling(self.imag_part, x, y, size)[0])
