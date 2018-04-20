@@ -30,12 +30,10 @@ Campina Grande, Para\'iba, Brasil\\
     We present a well tested Python-based library for simulating and computing
     generalized fading channels, named \texttt{maoud}. We describe the
     applicability of \texttt{maoud} using examples in scenarios of communications
-    channels impaired by generalized fading, namely: spectrum sensing, bit error
-    rate computation, and fading estimation. For the latter, we develop an iterative
-    algorithm using the Majorization-Minimization framework, which allows reliable
-    estimation of the fading parameter. The development of \texttt{maoud} is open
-    source and its code, along with the code for the examples presented in this
-    paper, are avaliable at \texttt{http://github.com/mirca/maoud}.
+    channels impaired by generalized fading, namely: spectrum sensing and bit error
+    rate computation. The development of \texttt{maoud} is open source and its code,
+    along with the code for the examples presented in this paper, are avaliable at
+    \texttt{http://github.com/mirca/maoud}.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -65,27 +63,6 @@ through examples involving spectrum sensing, bit error rate (BER) computation, a
 fading estimation.
 
 \subsection*{Notation}
-Scalars and random variables are denoted as italic, small-case letters
-\textit{e.g.} $x$; sets and events are denoted as italic, capital
-letters \textit{e.g.}, $A$; vectors and random vectors are denoted as
-italic, boldface, small-case letters \textit{e.g.} $\bm{x}$. The $n-$th
-component of a vector $\bm{x}$ is denoted as $x_n$. A complex vector of length
-$n$ is defined as $\bm{x} \in \mathbb{C}^{n\times 1}$. All vectors are column
-vectors. Matrices are denoted as italic, boldface, capital letters as
-in $\bm{X}$; the identity matrix of order $n$ is denoted as $\bm{I}_n$. We
-define a discrete-time circularly symmetric Gaussian process $\bm{z}$ as any
-collection of random variables $\bm{z}~=~\bm{x}~+~j\bm{y}$,
-$j \triangleq \sqrt{-1}$, such that $\bm{x}$ and $\bm{y}$ are i.i.d. jointly
-Gaussian, with zero mean vector and covariance matrix given by
-$\mathbb{E}\left(\bm{z}\bm{z}^{\dagger}\right)$, in which $\bm{z}^\dagger$ means
-the conjugate transpose of $\bm{z}$. The expectation value with respect to the
-probability distribution of a random variable $x$ is denoted as $\mathbb{E}_x$.
-The probability of an event $A$ is denoted as $\mathbb{P}(A)$. The indicator
-function is denoted as $\mathbb{I}(\cdot)$, it evaluates to one if its argument
-is true and zero otherwise. For any given two real functions $f$ and $g$ defined
-on the same domain $D$, $f \cong g$ means that there exist a constant $c$ such that
-$f(\bm{x}) = g(\bm{x}) + c$, $\forall~ \bm{x} \in D$. The natural logarithm of a
-scalar $x > 0$ is denoted as $\log x$.
 
 \section{Rejection sampling}
 
