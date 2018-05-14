@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-===================================================
-Simulation of generalized fading channels in Python
-===================================================
+================================================
+Simulating generalized fading channels in Python
+================================================
 
 This package delivers a tool to estimate probabilities
 that arise in Communications Systems tasks such as bit error
