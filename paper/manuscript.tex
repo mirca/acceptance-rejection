@@ -1,42 +1,45 @@
-\documentclass[conference, 10pt]{IEEEtran}
-\usepackage[cmex10]{amsmath}
+\documentclass{sbrt2013port}
+%\usepackage[brazil]{babel}
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{color}
-\usepackage{placeins}
+%\usepackage{placeins}
 \usepackage{bm}
-\usepackage{cite}
+%\usepackage{cite}
 %\usepackage{stfloats}
-\usepackage{float}
+%\usepackage{float}
 \usepackage{hyperref}
-\usepackage{cite}
+%\usepackage{cite}
 \usepackage{tabularx,colortbl}
-\DeclareMathOperator*{\argmin}{arg\,min}
+
 
 \begin{document}
-\title{\texttt{maoud}: a Python package for Simulating Generalized Fading Channels}
 
-\author{\IEEEauthorblockN{Jos\'e~V.~de~M.~Cardoso,~Paulo~R.~Lins~J\'unior,}
-        \IEEEauthorblockN{~Wamberto~J.~L.~Queiroz,~and~Marcelo~S.~Alencar,~\textit{IEEE Senior Member}}
-\IEEEauthorblockA{Universidade Federal de Campina Grande\\
-Instituto Federal de Educa\c c\~ao, Ciencia, e Tecnologia da Para\'iba\\
-Campina Grande, Para\'iba, Brasil\\
-\{josevinicius, wamberto, paulo, malencar\}@iecom.org.br\\}
-}
+\title{Simulating Generalized Fading Channels in Python}
+
+\author{José Vinícius de M. Cardoso$^1$,   Paulo Ribeiro Lins Júnior$^2$, Wamberto Queiroz$^1$ e Marcelo Sampaio de Alencar$^3$
+\thanks{\noindent Instituto de Estudos Avançados em Comunicações -- Iecom; $^1$Universidade Federal de Campina Grande -- UFCG; $^2$Grupo de Pesquisa em Comunicações e Processamento de Informação -- GComPI/Instituto Federal de Educação, Ciência e Tecnologia da Paraíba -- IFPB, Campus Campina Grande -- PB, $^3$Universidade Federal da Bahia -- UFBA, emails: $^1$\{josevinicius, wamberto\}@iecom.org.br, $^2$paulo.lins@ifpb.edu.br e $^3$malencar@iecom.org.br.}}
 
 \maketitle
 
+\markboth{XXXVI SIMPÓSIO BRASILEIRO DE TELECOMUNICAÇÕES E PROCESSAMENTO DE SINAIS - SBrT'2018, 16-19 DE SETEMBRO DE 2018, CAMPINA GRANDE, PB} {XXXVI SIMPÓSIO BRASILEIRO DE TELECOMUNICAÇÕES E PROCESSAMENTO DE SINAIS - SBrT'2018, 16-19 DE SETEMBRO DE 2018, CAMPINA GRANDE, PB}
+
 \begin{abstract}
-    We present a well tested Python-based library for simulating and computing
-    generalized fading channels, named \texttt{maoud}. We describe the
-    applicability of \texttt{maoud} using examples in scenarios of communications
-    channels impaired by generalized fading, namely: spectrum sensing and bit error
-    rate computation. The development of \texttt{maoud} is open source and its code,
-    along with the code for the examples presented in this paper, are avaliable at
+    We present a novel and well tested Python-based library for simulating and computing
+    generalized fading channels, considering $\alpha\text{-}\mu$, $\kappa\text{-}\mu$, and
+$\eta\text{-}\mu$ distributions. We describe the
+    applicability of this library using a few communications channels scenarios
+    impaired by generalized fading, namely, spectrum sensing and bit error
+    rate computation. The development of the library is open source and its code along
+    with examples are available at
     \texttt{http://github.com/mirca/maoud}.
 \end{abstract}
 
-\IEEEpeerreviewmaketitle
+\begin{keywords}
+Generalized Fading, Simulation, Python
+\end{keywords}
+
 \section{Introduction}
 
 The study of modern wireless communications systems heavily relies on fading channel simulation.
@@ -48,26 +51,51 @@ Although accurate and precise distributions for generalized fading have been
 estabilished in the literature, such as $\alpha\text{-}\mu$~\cite{yacoub.2007.1},
 $\kappa\text{-}\mu$~\cite{yacoub.2007.2} and $\eta\text{-}\mu$~\cite{yacoub.2007.2},
 the generation of samples following these distributions is usually
-a time-consuming task. In~\cite{cogliatti2012}, the authors built an efficient
+a time-consuming task.
+
+In~\cite{cogliatti2012}, the authors built an efficient
 algorithm, based on the rejection method, for generation of samples from those
-distributions.
-
-
-however, there are neither open nor
+distributions. However, there are neither open nor
 closed source implementations available to the scientific community.
 
-In this paper, we present an open source Python package, named \texttt{maoud},
+In this paper, we present an open source Python package
 for generation of samples following the $\alpha\text{-}\mu$, $\kappa\text{-}\mu$, and
-$\eta\text{-}\mu$ distributions. The usefullness of $\texttt{maoud}$ is illustrated
-through examples involving spectrum sensing, bit error rate (BER) computation, and
-fading estimation.
+$\eta\text{-}\mu$ distributions. The usefullness of ths package is illustrated
+through well known examples involving spectrum sensing and bit error rate (BER) computation.
 
-\subsection*{Notation}
+Section~\ref{rejec} presents the well known rejection method which is used as
+the basis for the proposed implementation. Section~\ref{sensing} and~\ref{ber}
+demonstrates the features of the proposed package in spectrum sensing over complex
+generalized fading channels and bit error rate computation on $\alpha$-$\mu$ fading.
+Section~\ref{conclusions} states the final remarks.
 
-\section{Rejection sampling}
+\section{Rejection Sampling}\label{rejec}
 
-\section{Examples}
-\subsection{Spectrum Sensing in Complex Generalized Fading Channels}
+The algorithm implemented in this work, originally proposed in~\cite{cogliatti2012},
+is based on the rejection method, which is one of the most used for the generation
+of samples of a probability distribution.
+
+We briefly describe the algorithm as follows. Consider that we would like to simulate a
+random variable $x$ with a probability density $f$. The basic idea is to find
+an alternative probability density $g$, from which there exists an efficient procedure
+to generate samples, e.g., inverse methods. Additionally, it is required that $g$
+majorizes $f$, i.e., we assume that there exists a real number $c$ such that $f(x)/g(x) < c$.
+
+Basically, the steps of the rejection algorithm are\cite{ross}:
+\begin{enumerate}
+	\item generate a sample $y$ from the probability density $g$;
+    \item generate a sample $u$ from a uniform density with support $(0, 1)$;
+	\item check $u \leq \frac{f(y)}{cg(y)}$; if true then accept $y$; otherwise, return to step 1.
+\end{enumerate}
+
+The implementation of this algorithm along with the code to efficiently generate
+samples from the $\alpha$-$\mu$, $\eta$-$\mu$, and $\kappa$-$\mu$ distributions
+is available at \url{http://github.com/mirca/maoud}.
+
+In order to validate the implementation, we apply the routines to
+two use cases in wireless communications: spectrum sensing and bit error rate computation.
+
+\section{Spectrum Sensing in Complex Generalized Fading Channels}~\label{sensing}
 
 The spectrum sensing problem consists in deciding whether or not a given channel
 frequency band is being occupied by a licensed (primary) user and, in case that such
@@ -77,10 +105,10 @@ such that the interference on the primary user is negligible.
 From a probabilistic point of view, the spectrum sensing problem may be framed as
 a decision theory problem, as follows
 \begin{align}
-    H_0:~& \bm{y} = \bm{w},\\
-    H_1:~& \bm{y} = h\bm{s} + \bm{w},
+    H_0:  \bm{y} &= \bm{w},\\
+    H_1:  \bm{y} &= h\bm{s} + \bm{w},
 \end{align}
-in which $\bm{y} \in \mathbb{C}^{n\times 1}$ is the received vector signal,
+\noindent in which $\bm{y} \in \mathbb{C}^{n\times 1}$ is the received vector signal,
 $\bm{w} \in \mathbb{C}^{n\times 1}$ is complex Gaussian noise process with zero mean
 vector and covariance matrix given as $\sigma^2\bm{I}_n$, and $h$ is the channel gain.
 
@@ -97,9 +125,9 @@ Recall that the energy detection rule can be expressed as
 \begin{equation}
     d_\delta (\tilde{y}) = \mathbb{I}(\tilde{y} > \delta)
 \end{equation}
-in which $\delta$ is a strictly positive real number known as energy threshold,
-and $d_\delta (\tilde{y}) = j,~j \in \{0,1\}$, means that the detector has decided
-in favor of the hypothesis $H_j$.
+in which $\mathbb{I}$ is the indicator function, $\delta$ is a strictly positive real
+number known as energy threshold, and $d_\delta (\tilde{y}) = j,~j \in \{0,1\}$,
+means that the detector has decided in favor of the hypothesis $H_j$.
 
 As a result, the probabilities of false alarm and miss detection can
 be written as
@@ -114,23 +142,23 @@ and $\delta$ is the energy detection threshold.
 
 The performance of detection schemes can be measured by computing the Receiver Operating
 Characteristic (ROC), which consists in varying $\delta$ and computing the pairs of
-probability of false alarm and miss detection, as illustrated in Fig.~\ref{fig:spectrum-sensing}.
+probability of false alarm and miss detection, as illustrated in Fig.~\ref{fig:spectrum-sensing}, in which the solid curve represents the theorectical probabilities as stated on
+(\ref{eq:pf}) and (\ref{eq:pd}) for different values of
+$\delta$, whereas bullets represent Monte Carlo simulations acquired with $10^6$ realizations.
+The input signal $\bm{s}$ consists in a vector of length $n=25$ in which each entry represents
+a symbol of a 64-PSK constellation. Symbols are assumed to be equiprobable and
+the signal-to-noise ratio is set to $5$ dB.
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics{figures/spectrum_sensing.eps}
+    \includegraphics{figures/spectrum_sensing}
     \caption{Receiver Operating Characteristic for the energy detector in $\alpha$-$\mu$
-             fading channel with $\alpha=2$ and $\mu=1$, i.e., Nakagami-$m$, $m = 1$.
-             The solid curve represents the theorectical probabilities as stated on
-             (\ref{eq:pf}) and (\ref{eq:pd}) for different values of
-             $\delta$, whereas bullets represent Monte Carlo simulations acquired with $10^6$ realizations.
-             The input signal $\bm{s}$ consists in a vector of length $n=25$ in which each entry represents
-             a symbol of a 64-PSK constellation. Symbols are assumed to be equiprobable.
-             The signal-to-noise ratio is set to $5$ dB.}
+             fading channel with $\alpha=2$ and $\mu=1$.
+             }
     \label{fig:spectrum-sensing}
 \end{figure}
 
-\subsection{BER in $\alpha$-$\mu$ Fading}
+\section{Bit Error Rate in $\alpha$-$\mu$ Fading}~\label{ber}
 
 Consider the system
 \begin{align}
@@ -163,16 +191,30 @@ and likewise
     & = \mathbb{E}_h\left(\Phi\left(\frac{a(1 - 2h)}{2\sigma}\right)\right).
 \end{align}
 
+Fig.~\ref{fig:ber} shows the expression of the BER as a function of the signal-to-noise ratio.
+As we can see, the simulation presents an excellent agreement against theorectical results.
+
 \begin{figure}[!htb]
     \centering
-    \includegraphics{figures/ber.eps}
-    \caption{BER}
+    \includegraphics{figures/ber}
+    \caption{BER \textit{versus} SNR.}
     \label{fig:ber}
 \end{figure}
 
-\section{Conclusions}
+\section{Conclusions}\label{conclusions}
+
+This paper presents a novel Python-based library for generalized fading simulation.
+The implementation is tested and validated in two use cases, namely,
+spectrum sensing and BER computation.
+
+The computational results show that the implementation presents a
+satisfactory agreement when compared with the theorectical formulation.
+
+We expect that the proposed library, which is open source,
+will be usefull to researchers, professors, and students of
+the field of wireless communications.
 
 \bibliographystyle{IEEEtran}
-\bibliography{manuscript.bib}
+\bibliography{manuscript}
 
 \end{document}
