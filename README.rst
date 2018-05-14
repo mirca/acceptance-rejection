@@ -1,7 +1,8 @@
 Simulation of generalized fading channels in Python
 ===================================================
 
-Let's say you have a complicated density function for which there is no implementation in ``Scipy``, e.g., Yacoub's Kappa-Mu::
+Let's say you have a complicated density function for which there is no implementation in ``Scipy``, e.g., Yacoub's Kappa-Mu.
+Don't worry, **maoud** got you covered::
 
     import numpy as np
     import scipy.special as sps
@@ -12,9 +13,9 @@ Let's say you have a complicated density function for which there is no implemen
                 * np.sqrt(kappa * (1.0 + kappa))) * sps.ive(mu - 1, 2 * mu * x
                 * np.sqrt(kappa * (1.0 + kappa))) / (np.power(kappa, (mu - 1.0) / 2.0)))
 
-Then you might want to do the following in order to draw samples::
+Then you want to do the following in order to draw samples::
 
-    from sampling import rejection_sampling
+    from maoud.sampling import rejection_sampling
 
     n_samples = int(1e6)
     kappa = 0.75
