@@ -45,9 +45,6 @@ Citation
 If you made use of the code available in this repository, please consider
 citing the following work::
 
-    On the performance of the energy detector subject to impulsive noise in κ—μ, α—μ, and η—μ fading channels**
-    JVM Cardoso, WJL Queiroz, H Liu, MS Alencar, Tsinghua Science and Technology, 2017.
-
     @ARTICLE{7986939,
     author={J. V. M. Cardoso and W. J. L. Queiroz and H. Liu and M. S. Alencar},
     journal={Tsinghua Science and Technology},

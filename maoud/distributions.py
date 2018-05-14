@@ -158,6 +158,7 @@ class ComplexAlphaMu(ComplexDistribution):
     def envelope_pdf(self, x):
         return AlphaMu(self.alpha, self.mu).pdf(x)
 
+
 class ComplexEtaMu(ComplexDistribution):
     def __init__(self, eta, mu):
         self.eta = eta
