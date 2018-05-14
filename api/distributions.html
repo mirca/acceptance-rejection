@@ -1,0 +1,648 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Distributions &mdash; maoud 0.1dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="API documentation" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> maoud
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Distributions</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sampling.html">Sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ipython_notebooks/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ipython_notebooks/generating_random_samples.html">Generating random samples from Yacoub’s <span class="math">\(\kappa-\mu\)</span> distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ipython_notebooks/spectrum_sensing.html">Performing spectrum sensing on complex <span class="math">\(\alpha-\mu\)</span> fading channel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/spectrum_sensing.html#Probabilistic-Analysis">Probabilistic Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/spectrum_sensing.html#Numerical/Theorectical-Analysis">Numerical/Theorectical Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/spectrum_sensing.html#Plot">Plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ipython_notebooks/ber_alpha_mu.html">Bit error rate computation in <span class="math">\(\alpha-\mu\)</span> fading channel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/ber_alpha_mu.html#Probabilistic-Analysis">Probabilistic Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/ber_alpha_mu.html#Theorectical/Numerical-Analysis">Theorectical/Numerical Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ipython_notebooks/ber_alpha_mu.html#Plot">Plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ipython_notebooks/acceptance_fraction.html">Computing the acceptance-fraction of the rejection sampler</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">maoud</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API documentation</a> &raquo;</li>
+        
+      <li>Distributions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/distributions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="module-maoud.distributions">
+<span id="distributions"></span><h1>Distributions<a class="headerlink" href="#module-maoud.distributions" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="maoud.distributions.AlphaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">AlphaMu</code><span class="sig-paren">(</span><em>alpha</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#AlphaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.AlphaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the α — μ probability distribution.
+For the theorectical aspects of the α — μ distribution, see
+M. D. Yacoub, The α — μ distribution: A physical fading model for the Stacy
+distribution, IEEE Trans. Veh. Technol., vol. 56, no. 1, pp. 27–34, 2007.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>alpha, mu</strong></td>
+<td>(float, float) Parameters that define the α — μ distribution.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.AlphaMu.pdf" title="maoud.distributions.AlphaMu.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td>Defines a univariate α — μ  probability density function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code>(x,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()].</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.AlphaMu.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#AlphaMu.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.AlphaMu.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a univariate α — μ  probability density function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : 1darray</p>
+<blockquote>
+<div><p>Points where to evaluate the pdf.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pdf</strong> : 1darray</p>
+<blockquote class="last">
+<div><p>pdf values at <cite>x</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.ComplexAlphaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">ComplexAlphaMu</code><span class="sig-paren">(</span><em>alpha</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexAlphaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexAlphaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.ComplexAlphaMu.envelope_pdf" title="maoud.distributions.ComplexAlphaMu.envelope_pdf"><code class="xref py py-obj docutils literal"><span class="pre">envelope_pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#maoud.distributions.ComplexAlphaMu.pdf" title="maoud.distributions.ComplexAlphaMu.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code>(x,&nbsp;y,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()] and [y.min(), y.max()] for the real and imaginary parts.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.ComplexAlphaMu.envelope_pdf">
+<code class="descname">envelope_pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexAlphaMu.envelope_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexAlphaMu.envelope_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maoud.distributions.ComplexAlphaMu.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexAlphaMu.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexAlphaMu.pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.ComplexDistribution">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">ComplexDistribution</code><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a class for probability distribution
+arising from a complex random variable Z = X + jY,
+where j = sqrt(-1).</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.ComplexDistribution.envelope_pdf" title="maoud.distributions.ComplexDistribution.envelope_pdf"><code class="xref py py-obj docutils literal"><span class="pre">envelope_pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code>(x)</td>
+<td>Defines a 1D probability density function.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.ComplexDistribution.rvs" title="maoud.distributions.ComplexDistribution.rvs"><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code></a>(x,&nbsp;y,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()] and [y.min(), y.max()] for the real and imaginary parts.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.ComplexDistribution.envelope_pdf">
+<code class="descname">envelope_pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexDistribution.envelope_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexDistribution.envelope_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maoud.distributions.ComplexDistribution.rvs">
+<code class="descname">rvs</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexDistribution.rvs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexDistribution.rvs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sample of length <cite>size</cite> in the range
+[x.min(), x.max()] and [y.min(), y.max()] for the
+real and imaginary parts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x, y</strong> : arrays</p>
+<blockquote>
+<div><p>The support of the pdf of the real and imaginary parts,
+respectively.</p>
+</div></blockquote>
+<p><strong>size</strong> : int</p>
+<blockquote class="last">
+<div><p>Size of the sample (number of realizations).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.ComplexEtaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">ComplexEtaMu</code><span class="sig-paren">(</span><em>eta</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexEtaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexEtaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">envelope_pdf</span></code>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#maoud.distributions.ComplexEtaMu.pdf" title="maoud.distributions.ComplexEtaMu.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code>(x,&nbsp;y,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()] and [y.min(), y.max()] for the real and imaginary parts.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.ComplexEtaMu.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexEtaMu.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexEtaMu.pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.ComplexKappaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">ComplexKappaMu</code><span class="sig-paren">(</span><em>kappa</em>, <em>mu</em>, <em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexKappaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexKappaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.ComplexKappaMu.imag_part" title="maoud.distributions.ComplexKappaMu.imag_part"><code class="xref py py-obj docutils literal"><span class="pre">imag_part</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#maoud.distributions.ComplexKappaMu.real_part" title="maoud.distributions.ComplexKappaMu.real_part"><code class="xref py py-obj docutils literal"><span class="pre">real_part</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.ComplexKappaMu.rvs" title="maoud.distributions.ComplexKappaMu.rvs"><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code></a>(x,&nbsp;y,&nbsp;size)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.ComplexKappaMu.imag_part">
+<code class="descname">imag_part</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexKappaMu.imag_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexKappaMu.imag_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maoud.distributions.ComplexKappaMu.real_part">
+<code class="descname">real_part</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexKappaMu.real_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexKappaMu.real_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="maoud.distributions.ComplexKappaMu.rvs">
+<code class="descname">rvs</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#ComplexKappaMu.rvs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.ComplexKappaMu.rvs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.Distribution">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">Distribution</code><a class="reference internal" href="../_modules/maoud/distributions.html#Distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.Distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract class for a probability distribution.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.Distribution.pdf" title="maoud.distributions.Distribution.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td>Defines a 1D probability density function.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#maoud.distributions.Distribution.rvs" title="maoud.distributions.Distribution.rvs"><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code></a>(x,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()].</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.Distribution.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#Distribution.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.Distribution.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a 1D probability density function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : 1darray</p>
+<blockquote>
+<div><p>Points where to evaluate the pdf.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>pdf</strong> : 1darray</p>
+<blockquote class="last">
+<div><p>pdf values at <cite>x</cite>.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="maoud.distributions.Distribution.rvs">
+<code class="descname">rvs</code><span class="sig-paren">(</span><em>x</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#Distribution.rvs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.Distribution.rvs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sample of length <cite>size</cite> in the range
+[x.min(), x.max()].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : array</p>
+<blockquote>
+<div><p>The support of the pdf.</p>
+</div></blockquote>
+<p><strong>size</strong> : int</p>
+<blockquote class="last">
+<div><p>Size of the sample (number of realizations).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.EtaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">EtaMu</code><span class="sig-paren">(</span><em>eta</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#EtaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.EtaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the eta — μ probability distribution.
+For the theorectical aspects of the eta — μ distribution, see
+[ADD REFERENCE]</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>eta, mu</strong></td>
+<td>(float, float) Parameters that define the eta — μ distribution.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.EtaMu.pdf" title="maoud.distributions.EtaMu.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code>(x,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()].</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.EtaMu.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#EtaMu.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.EtaMu.pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="maoud.distributions.KappaMu">
+<em class="property">class </em><code class="descclassname">maoud.distributions.</code><code class="descname">KappaMu</code><span class="sig-paren">(</span><em>kappa</em>, <em>mu</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#KappaMu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.KappaMu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the kappa — μ probability distribution.
+For the theorectical aspects of the kappa — μ distribution, see
+[ADD REFERENCE]</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>kappa, mu</strong></td>
+<td>(float, float) Parameters that define the kappa — μ distribution.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#maoud.distributions.KappaMu.pdf" title="maoud.distributions.KappaMu.pdf"><code class="xref py py-obj docutils literal"><span class="pre">pdf</span></code></a>(x)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">rvs</span></code>(x,&nbsp;size)</td>
+<td>Returns a sample of length <cite>size</cite> in the range [x.min(), x.max()].</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="maoud.distributions.KappaMu.pdf">
+<code class="descname">pdf</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/maoud/distributions.html#KappaMu.pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#maoud.distributions.KappaMu.pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mirca.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1dev0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

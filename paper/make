@@ -1,7 +1,0 @@
-bibtex manuscript
-latex manuscript.tex
-dvips manuscript.dvi
-ps2pdf manuscript.ps
-rm manuscript.ps
-rm manuscript.dvi
-open manuscript.pdf
