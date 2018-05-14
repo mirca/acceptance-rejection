@@ -3,8 +3,7 @@ import math
 
 def rejection_sampling(pdf, x, n_samples, *args):
     """
-    This is actually a pretty good implementation of the acceptance-rejection
-    sampler.
+    This is maybe the simplest implementation of the acceptance-rejection sampler.
 
     Parameters
     ----------
@@ -21,6 +20,9 @@ def rejection_sampling(pdf, x, n_samples, *args):
     -------
     accepted_samples : array
         Array containing samples from ``pdf``
+    acceptance_fraction : float
+        The mean ratio between the number of accepted samples and
+        the number of generated ones.
     """
     pdf_x = pdf(x, *args)
     pdf_min, pdf_max  = np.min(pdf_x), np.max(pdf_x)
