@@ -31,8 +31,8 @@
 $\eta\text{-}\mu$ distributions. We describe the
     applicability of this library using a few communications channels scenarios
     impaired by generalized fading, namely, spectrum sensing and bit error
-    rate computation. The development of the library is open source and its code along
-    with examples are available at
+    rate computation. The development of the library is open source and its code, along
+    with examples, are available at
     \texttt{http://github.com/mirca/maoud}.
 \end{abstract}
 
@@ -63,12 +63,6 @@ for generation of samples following the $\alpha\text{-}\mu$, $\kappa\text{-}\mu$
 $\eta\text{-}\mu$ distributions. The usefullness of ths package is illustrated
 through well known examples involving spectrum sensing and bit error rate (BER) computation.
 
-Section~\ref{rejec} presents the well known rejection method which is used as
-the basis for the proposed implementation. Section~\ref{sensing} and~\ref{ber}
-demonstrates the features of the proposed package in spectrum sensing over complex
-generalized fading channels and bit error rate computation on $\alpha$-$\mu$ fading.
-Section~\ref{conclusions} states the final remarks.
-
 \section{Rejection Sampling}\label{rejec}
 
 The algorithm implemented in this work, originally proposed in~\cite{cogliatti2012},
@@ -81,7 +75,7 @@ an alternative probability density $g$, from which there exists an efficient pro
 to generate samples, e.g., inverse methods. Additionally, it is required that $g$
 majorizes $f$, i.e., we assume that there exists a real number $c$ such that $f(x)/g(x) < c$.
 
-Basically, the steps of the rejection algorithm are\cite{ross}:
+Basically, the steps of the rejection algorithm are~\cite{ross}:
 \begin{enumerate}
 	\item generate a sample $y$ from the probability density $g$;
     \item generate a sample $u$ from a uniform density with support $(0, 1)$;
@@ -134,8 +128,7 @@ be written as
 \begin{align}
     \mathbb{P}\left(d_\delta(\tilde{y}) = 1 | H_0\right) &=
         1 -  P(\delta | H_0) = 1 - \gamma\left(n, \frac{\delta}{\sigma^2}\right),\label{eq:pf} \\
-    \mathbb{P}\left(d_\delta(\tilde{y}) = 0 | H_1\right) &= \mathbb{E}_{h}\left(P(\delta| h, H_1)\right)\nonumber\\
-    &= \int_{-\infty}^{+\infty} P(\delta | h, H_1)p(h)\;\mathrm{d}h,\label{eq:pd}
+    \mathbb{P}\left(d_\delta(\tilde{y}) = 0 | H_1\right) & = \int_{-\infty}^{+\infty} P(\delta | h, H_1)p(h)\;\mathrm{d}h,\label{eq:pd}
 \end{align}
 in which $\gamma$ is the regularized lower incomplete Gamma function, $p(h)$ is the pdf of the fading,
 and $\delta$ is the energy detection threshold.
@@ -153,7 +146,7 @@ the signal-to-noise ratio is set to $5$ dB.
     \centering
     \includegraphics{figures/spectrum_sensing}
     \caption{Receiver Operating Characteristic for the energy detector in $\alpha$-$\mu$
-             fading channel with $\alpha=2$ and $\mu=1$.
+             channel with $\alpha=2$ and $\mu=1$.
              }
     \label{fig:spectrum-sensing}
 \end{figure}
@@ -182,22 +175,20 @@ rule, i.e.,
 \end{align}
 therefore
 \begin{align}
-    \mathbb{P}\left(\hat{y} = 1 | s = 0\right) & = \mathbb{P}\left(|w - a|^2 - |w|^2 < 0\right)\nonumber\\
-    & = \mathbb{P}\left(w > \frac{a}{2}\right) = 1 - \Phi\left(\frac{a}{2\sigma}\right)
+    \mathbb{P}\left(\hat{y} = 1 | s = 0\right) & = \mathbb{P}\left(|w - a|^2 - |w|^2 < 0\right) = 1 - \Phi\left(\frac{a}{2\sigma}\right)
 \end{align}
 and likewise
 \begin{align}
-    \mathbb{P}\left(\hat{y} = 0 | s = a\right) & = \mathbb{P}\left(ha + w < \frac{a}{2}\right) \nonumber\\
-    & = \mathbb{E}_h\left(\Phi\left(\frac{a(1 - 2h)}{2\sigma}\right)\right).
+    \mathbb{P}\left(\hat{y} = 0 | s = a\right) & = \mathbb{P}\left(ha + w < \frac{a}{2}\right) = \mathbb{E}_h\left(\Phi\left(\frac{a(1 - 2h)}{2\sigma}\right)\right).
 \end{align}
 
-Fig.~\ref{fig:ber} shows the expression of the BER as a function of the signal-to-noise ratio.
+In Fig.~\ref{fig:ber}, we show the expression of the BER as a function of the signal-to-noise ratio,
+for the system under consideration with $\alpha=2$ and $\mu = 5$.
 As we can see, the simulation presents an excellent agreement against theorectical results.
-
 \begin{figure}[!htb]
     \centering
     \includegraphics{figures/ber}
-    \caption{BER \textit{versus} SNR.}
+    \caption{BER as a function of the SNR for $\alpha=2$ and $\mu = 5$}
     \label{fig:ber}
 \end{figure}
 
@@ -213,6 +204,10 @@ satisfactory agreement when compared with the theorectical formulation.
 We expect that the proposed library, which is open source,
 will be usefull to researchers, professors, and students of
 the field of wireless communications.
+
+Finally, all the simulations were done in a personal laptop,
+and the generation of $10^6$ samples from any of the generalized fading
+distributions took on average 10 seconds.
 
 \bibliographystyle{IEEEtran}
 \bibliography{manuscript}
